@@ -44,3 +44,12 @@ To run the server as-is, run `./mvnw spring-boot:run`.
 This runs a Maven plugin provided by Spring Boot that will start the Spring Boot API server.
 To compile the program, run `./mvnw package` or `./mvnw compile`.
 There are a lot more commands you can google if you want as well.
+
+### How to hit the API endpoints
+
+The server runs on port 8080 by default, which means the URL is `http://localhost:8080`.
+You can hit the APIs from the command line using the `curl` command or from a browser with JavaScript.
+For example, to send a GET request to the `/books` endpoint, you can run `curl -X GET http://localhost:8080/books`.
+To send a POST request with a JSON payload to the `/books` endpoint, you can run `curl -X POST -H "Content-Type: application/json" -d '{"title": "The Great Gatsby", "author": "F. Scott Fitzgerald"}' http://localhost:8080/books`.
+You can google how to use `curl` and what the different arguments (`-X`, `-H`, `-d`, etc.) do.
+There are also some great tools like Postman or Insomnia that make this easy as well.

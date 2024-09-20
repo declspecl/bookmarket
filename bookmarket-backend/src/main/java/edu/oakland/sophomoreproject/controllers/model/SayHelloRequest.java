@@ -1,5 +1,6 @@
 package edu.oakland.sophomoreproject.controllers.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonDeserialize
 public class SayHelloRequest {
 	private String name;
 }

@@ -1,5 +1,6 @@
 package edu.oakland.sophomoreproject.controllers.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -23,6 +24,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonSerialize
 public class SayHelloResponse {
 	private Date timestamp;
 	private String message;
