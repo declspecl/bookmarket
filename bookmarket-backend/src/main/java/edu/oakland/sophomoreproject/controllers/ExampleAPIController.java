@@ -25,7 +25,7 @@ public class ExampleAPIController {
 	@Autowired
 	public ExampleAPIController(
 			SampleComponent sampleComponent,
-			@Qualifier String sampleBean
+			@Qualifier("sampleBean") String sampleBean
 	) {
 		this.sampleComponent = sampleComponent;
 		this.sampleBean = sampleBean;

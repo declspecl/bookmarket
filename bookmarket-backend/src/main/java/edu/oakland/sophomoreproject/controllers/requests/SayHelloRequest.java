@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public class SayHelloRequest {
 	private String name;
 
+	// required for @JsonDeserialize
+	public SayHelloRequest() {}
+
 	public SayHelloRequest(String name) {
 		this.name = name;
 	}
