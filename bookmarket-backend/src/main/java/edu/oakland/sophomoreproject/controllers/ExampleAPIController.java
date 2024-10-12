@@ -1,9 +1,10 @@
 package edu.oakland.sophomoreproject.controllers;
 
 import edu.oakland.sophomoreproject.components.SampleComponent;
-import edu.oakland.sophomoreproject.controllers.model.SayHelloRequest;
-import edu.oakland.sophomoreproject.controllers.model.SayHelloResponse;
-import lombok.extern.log4j.Log4j2;
+import edu.oakland.sophomoreproject.controllers.requests.SayHelloRequest;
+import edu.oakland.sophomoreproject.controllers.responses.SayHelloResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -12,21 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
+import java.time.Instant;
 
-/**
- * This is going to be deleted
- * I'm just including a quick example of a controller to show how it works
- */
-
-/**
- * The @Controller annotation tells the API framework called Spring Boot that this class has API endpoints.
- * It will then generate code to make API endpoints based on the methods in this class and their annotations
- */
-
-@Log4j2
 @Controller
 public class ExampleAPIController {
+	Logger log = LogManager.getLogger(ExampleAPIController.class);
+
 	private String sampleBean;
 	private SampleComponent sampleComponent;
 
@@ -39,26 +31,26 @@ public class ExampleAPIController {
 		this.sampleBean = sampleBean;
 	}
 
-	@GetMapping("/example")
+	@GetMapping("/api/example")
 	public ResponseEntity<String> exampleApi() {
-		log.info("Got request to /example");
+		log.info("Received an HTTP GET request to /api/example");
 
 		return ResponseEntity.ok("Hello, World!");
 	}
 
-	@PostMapping("/hello")
+	@PostMapping("/api/hello")
 	public ResponseEntity<SayHelloResponse> sayHelloApi(@RequestBody SayHelloRequest request) {
-		log.info("Got request to /hello with request: {}", request);
+		log.info("Received an HTTP POST request to /api/hello with a request body: {}", request);
 
 		String name = request.getName();
-		Date now = new Date();
+		Instant now = Instant.now();
 
-		SayHelloResponse response = SayHelloResponse.builder()
-				.withMessage("Hello, " + name + "!")
-				.withTimestamp(now)
-				.build();
+		SayHelloResponse response = new SayHelloResponse(
+				now,
+				"Hello, " + name
+		);
 
-		log.info("Returning response from /hello: {}", response);
+		log.info("Returning response from /api/hello: {}", response);
 
 		return ResponseEntity.ok(response);
 	}

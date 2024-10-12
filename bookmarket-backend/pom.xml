@@ -5,15 +5,15 @@
 
 	<groupId>edu.oakland.sophomoreproject</groupId>
 	<artifactId>bookmarket</artifactId>
-	<version>0.0.0</version>
+	<version>1.0.0</version>
 
 	<name>bookmarket</name>
 	<url /> <!-- TODO -->
 
 	<properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.release>21</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.release>21</maven.compiler.release>
-		<maven.compiler.release>21</maven.compiler.release>
 	</properties>
 
 	<dependencies>
@@ -48,16 +48,6 @@
 		</dependency>
 
 		<!-- UTILS -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.34</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>33.1.0-jre</version>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
