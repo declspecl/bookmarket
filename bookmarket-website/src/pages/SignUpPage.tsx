@@ -1,3 +1,5 @@
+import "./SignUpPage.css";
+
 export function SignUpPage() {
     return (
         <div>
