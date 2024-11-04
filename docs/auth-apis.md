@@ -18,7 +18,7 @@ Fields required to be returned by the API:
 - `lastName`
 - `email`
 - `password`
-- `token`
+- `token` - returned as a cookie in the `set-cookie` header
 - `userId`
 
 ### Sign up/Log in/Log out 
@@ -69,13 +69,13 @@ Response:
             "lastName": "O'Brien",
             "email": "jlobrien@oakland.edu",
             "Password": "OUBookmarket123",
-            "confirmPassword": "OUBookmarket123",
-            "token": "abcd1234"
+            "token": "abcd1234" 
        } 
     Signup (response)":
         {
             "message": "User registered successfully",
-            "userId": "1234"
+            "userId": "1234",
+            "token": "abcd1234"
         }
     ]
     "Login (request)": [
@@ -107,7 +107,7 @@ Response:
     "Logout (request)": [
             
             NA
-    Login (response)":
+    "Logout (response)":
         {
             "message": "Logout Successful."
         }
