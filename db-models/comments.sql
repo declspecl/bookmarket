@@ -7,6 +7,7 @@ CREATE TABLE comments (
     creator_id INTEGER NOT NULL,                                    -- ID of the author, required
     content TEXT NOT NULL,                                          -- Comment text
     created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,             -- Timestamp when comment was created
-    FOREIGN KEY (creator_id) REFERENCES creators(id),
-    FOREIGN KEY (parent_comment_id) REFERENCES comments(comment_id)
+    FOREIGN KEY (creator_id) REFERENCES users(user_id),
+    FOREIGN KEY (parent_comment_id) REFERENCES comments(comment_id),
+    FOREIGN KEY (parent_listing_id) REFERENCES listings(listing_id)
 );
