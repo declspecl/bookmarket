@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.requests.CreateCommentRequest;
+import controllers.responses.GetAllCommentsForListingResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ public class CommentsController {
 	public CommentsController() {}
 
 	@GetMapping("/api/listing/{listingId}/comment")
-	public ResponseEntity<Void> getAllCommentsForListing(
+	public ResponseEntity<GetAllCommentsForListingResponse> getAllCommentsForListing(
 			HttpServletRequest request,
 			@PathVariable("listingId") String listingId
 	) {

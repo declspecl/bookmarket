@@ -2,6 +2,8 @@ package controllers;
 
 import controllers.requests.CreateListingRequest;
 import controllers.requests.UpdateListingRequest;
+import controllers.responses.GetAllListingsResponse;
+import controllers.responses.GetListingByIdResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,7 @@ public class ListingsController {
 	public ListingsController() {}
 
 	@GetMapping("/api/listing/{listingId}")
-	public ResponseEntity<Void> getListingById(
+	public ResponseEntity<GetListingByIdResponse> getListingById(
 			HttpServletRequest request,
 			@PathVariable("listingId") String listingId
 	) {
@@ -28,7 +30,7 @@ public class ListingsController {
 	}
 
 	@GetMapping("/api/listing")
-	public ResponseEntity<Void> getAllListings(HttpServletRequest request) {
+	public ResponseEntity<GetAllListingsResponse> getAllListings(HttpServletRequest request) {
 		// ... do logic here
 
 		// ... add session cookie to response
