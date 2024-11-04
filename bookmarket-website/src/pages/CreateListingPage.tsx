@@ -1,3 +1,5 @@
+import "./CreateListingPage.css";
+
 export function CreateListingPage() {
     return (
         <div>
