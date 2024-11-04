@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 	public AuthController() {}
 
-	@PostMapping("/login")
+	@PostMapping("/api/login")
 	public ResponseEntity<Void> login(
 			HttpServletRequest request,
 			@RequestBody LoginRequest payload
@@ -24,7 +24,7 @@ public class AuthController {
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/signup")
+	@PostMapping("/api/signup")
 	public ResponseEntity<Void> signup(
 			HttpServletRequest request,
 			@RequestBody SignUpRequest payload
