@@ -1,4 +1,4 @@
-package dependencies.sqlite;
+package edu.oakland.sophomoreproject.dependencies.sqlite;
 
 import org.sqlite.SQLiteConfig;
 

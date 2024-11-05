@@ -1,6 +1,6 @@
-package dependencies.sqlite.sessions;
+package edu.oakland.sophomoreproject.dependencies.sqlite.sessions;
 
-import dependencies.sqlite.TableAccessor;
+import edu.oakland.sophomoreproject.dependencies.sqlite.TableAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.sqlite.SQLiteConfig;
