@@ -1,4 +1,4 @@
-package authorization;
+package edu.oakland.sophomoreproject.authorization;
 
 /// Custom exception class just so that we know specifically if an exception happened from
 /// a user being unauthorized over something else

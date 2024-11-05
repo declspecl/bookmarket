@@ -1,4 +1,4 @@
-package dependencies.sqlite.sessions;
+package edu.oakland.sophomoreproject.dependencies.sqlite.sessions;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

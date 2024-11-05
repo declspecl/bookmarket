@@ -1,7 +1,7 @@
-package authorization;
+package edu.oakland.sophomoreproject.authorization;
 
-import dependencies.sqlite.sessions.Session;
-import dependencies.sqlite.sessions.SessionsTableAccessor;
+import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
+import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.SessionsTableAccessor;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class SessionAuthorizer {
 		this.sessionsTableAccessor = sessionsTableAccessor;
 	}
 
-	public void authorize(HttpServletRequest request) throws UnauthorizedException, SQLException {
+	public Session authorize(HttpServletRequest request) throws UnauthorizedException, SQLException {
 		// check for if HTTP request has a session cookie
 		Cookie sessionCookie = cookieExtractor.extractSessionCookie(request);
 		if (sessionCookie == null) {
@@ -51,5 +51,6 @@ public class SessionAuthorizer {
 		}
 
 		// if we got here and no exceptions were thrown, session is valid
+		return dbSession;
 	}
 }
