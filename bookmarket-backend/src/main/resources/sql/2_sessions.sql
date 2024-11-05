@@ -1,0 +1,3 @@
+CREATE TABLE IF NOT EXISTS sessions (
+    session_id TEXT NOT NULL PRIMARY KEY
+);
