@@ -1,0 +1,63 @@
+# Listings APIs
+
+## Which use cases do the Listings APIs need to satisfy?
+
+- Retrieve all listings
+- Retrieve a specific listing by ID
+- Create a new listing
+- Update an existing listing by ID
+- Delete a listing by ID
+
+## Required APIs and Details
+
+### Retrieve all listings
+
+The frontend will display the following details for each listing:
+- `id`
+- `Author`
+- `title`
+- `price`
+- `description`
+- `seller`
+- `sellerID`
+- `class`
+- `condition`
+- `Sale availability`
+
+The appropriate HTTP verb for this is `GET` since it's for retrieving data.  
+The REST endpoint will be `GET /api/listings` and will return a list of listing objects.
+
+#### Example Request & Response
+
+- **Request endpoint**: `GET /api/listings`
+
+- **Response**:
+  ```json
+  {
+    "listings": [
+      {
+        "id": 1,
+        "Author": "nameExample",
+        "title": "Used Bicycle",
+        "price": 150.00,
+        "description": "A gently used mountain bike.",
+        "seller": "Student1",
+        "sellerID": 294720,
+        "class": "Sports",
+        "condition": "Used",
+        "Sale availability": "Available"
+      },
+      {
+        "id": 2,
+        "Author": "nameExample",
+        "title": "Textbook: Calculus",
+        "price": 40.00,
+        "description": "Used calculus textbook in good condition.",
+        "seller": "Student2",
+        "sellerID": 294721,
+        "class": "Books",
+        "condition": "Used",
+        "Sale availability": "Available"
+      }
+    ]
+  }
