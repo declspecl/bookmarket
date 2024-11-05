@@ -1,63 +1,123 @@
-# Listings APIs
+# Listings API
 
-## Which use cases do the Listings APIs need to satisfy?
+## Overview
 
-- Retrieve all listings
-- Retrieve a specific listing by ID
-- Create a new listing
-- Update an existing listing by ID
-- Delete a listing by ID
+This API enables interaction with a listings data source using JSON format, providing CRUD (Create, Read, Update, Delete) operations for managing listings. Each endpoint interacts with `listings.json` and performs operations such as retrieval, addition, updates, and deletion of listing data. JSON stubs serve as examples for request and response data structures.
 
-## Required APIs and Details
+## Endpoints
 
-### Retrieve all listings
+### GET /api/listings
 
-The frontend will display the following details for each listing:
-- `id`
-- `Author`
-- `title`
-- `price`
-- `description`
-- `seller`
-- `sellerID`
-- `class`
-- `condition`
-- `Sale availability`
+Retrieve all listings available.
 
-The appropriate HTTP verb for this is `GET` since it's for retrieving data.  
-The REST endpoint will be `GET /api/listings` and will return a list of listing objects.
+#### Example Response
+```json
+{
+  "listings": [
+    {
+      "id": 1,
+      "author": "nameExample",
+      "title": "Used Bicycle",
+      "price": 150.00,
+      "description": "A gently used mountain bike.",
+      "seller": "Student1",
+      "sellerID": 294720,
+      "class": "Sports",
+      "condition": "Used",
+      "saleAvailability": "Available"
+    }
+  ]
+}
+```
 
-#### Example Request & Response
+---
 
-- **Request endpoint**: `GET /api/listings`
+### GET /api/listings/{listingId}
 
-- **Response**:
-  ```json
-  {
-    "listings": [
-      {
-        "id": 1,
-        "Author": "nameExample",
-        "title": "Used Bicycle",
-        "price": 150.00,
-        "description": "A gently used mountain bike.",
-        "seller": "Student1",
-        "sellerID": 294720,
-        "class": "Sports",
-        "condition": "Used",
-        "Sale availability": "Available"
-      },
-      {
-        "id": 2,
-        "Author": "nameExample",
-        "title": "Textbook: Calculus",
-        "price": 40.00,
-        "description": "Used calculus textbook in good condition.",
-        "seller": "Student2",
-        "sellerID": 294721,
-        "class": "Books",
-        "condition": "Used",
-        "Sale availability": "Available"
-      }
-    ]
-  }
+Retrieve a specific listing by its ID.
+
+#### Example Request
+`GET /api/listings/1`
+
+#### Example Response
+```json
+{
+  "id": 1,
+  "author": "nameExample",
+  "title": "Used Bicycle",
+  "price": 150.00,
+  "description": "A gently used mountain bike.",
+  "seller": "Student1",
+  "sellerID": 294720,
+  "class": "Sports",
+  "condition": "Used",
+  "saleAvailability": "Available"
+}
+```
+
+---
+
+### POST /api/listings
+
+Create a new listing. The request body should contain the listing details.
+
+#### Example Request Body
+```json
+{
+  "author": "nameExample",
+  "title": "New Item Title",
+  "price": 200.00,
+  "description": "Description of the new item.",
+  "seller": "Student3",
+  "sellerID": 294722,
+  "class": "Electronics",
+  "condition": "New",
+  "saleAvailability": "Available"
+}
+```
+
+---
+
+### PUT /api/listings/{listingId}
+
+Update an existing listing by its ID. Include the updated details in the request body.
+
+#### Example Request
+`PUT /api/listings/2`
+
+#### Example Request Body
+```json
+{
+  "price": 35.00,
+  "saleAvailability": "Unavailable"
+}
+```
+
+---
+
+### DELETE /api/listings/{listingId}
+
+Delete a specific listing by its ID.
+
+#### Example Request
+`DELETE /api/listings/1`
+
+---
+
+## CRUD Operations Summary
+
+- **Create**: `POST /api/listings`
+- **Read**: `GET /api/listings`
+- **Update**: `PUT /api/listings/{listingId}`
+- **Delete**: `DELETE /api/listings/{listingId}`
+
+---
+
+## JSON Data Interaction
+
+- **GET Requests**: Retrieve data from `listings.json`.
+- **POST Requests**: Add new listing to the array and update `listings.json`.
+- **PUT Requests**: Modify listing details by ID and save changes.
+- **DELETE Requests**: Remove listing by ID from `listings.json`.
+
+---
