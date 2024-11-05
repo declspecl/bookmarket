@@ -4,6 +4,8 @@ import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.controllers.requests.LoginRequest;
 import edu.oakland.sophomoreproject.controllers.requests.SignUpRequest;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
+import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.SessionsTableAccessor;
+import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthController {
-	ControllerUtils controllerUtils;
+	private final ControllerUtils controllerUtils;
+	private final UsersTableAccessor usersTableAccessor;
+	private final SessionsTableAccessor sessionsTableAccessor;
 
 	public AuthController(
-			ControllerUtils controllerUtils
+			ControllerUtils controllerUtils,
+			UsersTableAccessor usersTableAccessor,
+			SessionsTableAccessor sessionsTableAccessor
 	) {
 		this.controllerUtils = controllerUtils;
+		this.usersTableAccessor = usersTableAccessor;
+		this.sessionsTableAccessor = sessionsTableAccessor;
 	}
 
 	@PostMapping("/api/login")

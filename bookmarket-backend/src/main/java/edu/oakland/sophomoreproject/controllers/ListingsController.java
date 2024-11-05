@@ -6,6 +6,7 @@ import edu.oakland.sophomoreproject.controllers.responses.GetAllListingsResponse
 import edu.oakland.sophomoreproject.controllers.responses.GetListingByIdResponse;
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
+import edu.oakland.sophomoreproject.dependencies.sqlite.listings.ListingsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
@@ -23,13 +24,16 @@ import java.sql.SQLException;
 public class ListingsController {
 	private final ControllerUtils controllerUtils;
 	private final SessionAuthorizer sessionAuthorizer;
+	private final ListingsTableAccessor listingsTableAccessor;
 
 	public ListingsController(
 			ControllerUtils controllerUtils,
-			SessionAuthorizer sessionAuthorizer
+			SessionAuthorizer sessionAuthorizer,
+			ListingsTableAccessor listingsTableAccessor
 	) {
 		this.controllerUtils = controllerUtils;
 		this.sessionAuthorizer = sessionAuthorizer;
+		this.listingsTableAccessor = listingsTableAccessor;
 	}
 
 	@GetMapping("/api/listing/{listingId}")

@@ -4,6 +4,7 @@ import edu.oakland.sophomoreproject.controllers.requests.CreateCommentRequest;
 import edu.oakland.sophomoreproject.controllers.responses.GetAllCommentsForListingResponse;
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
+import edu.oakland.sophomoreproject.dependencies.sqlite.comments.CommentsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,17 @@ import java.sql.SQLException;
 public class CommentsController {
 	private final ControllerUtils controllerUtils;
 	private final SessionAuthorizer sessionAuthorizer;
+	private final CommentsTableAccessor commentsTableAccessor;
 
 	@Autowired
 	public CommentsController(
 			ControllerUtils controllerUtils,
-			SessionAuthorizer sessionAuthorizer
+			SessionAuthorizer sessionAuthorizer,
+			CommentsTableAccessor commentsTableAccessor
 	) {
 		this.controllerUtils = controllerUtils;
 		this.sessionAuthorizer = sessionAuthorizer;
+		this.commentsTableAccessor = commentsTableAccessor;
 	}
 
 	@GetMapping("/api/listing/{listingId}/comment")
