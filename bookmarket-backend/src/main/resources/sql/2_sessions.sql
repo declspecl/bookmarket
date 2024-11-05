@@ -1,3 +1,7 @@
 CREATE TABLE IF NOT EXISTS sessions (
-    session_id TEXT NOT NULL PRIMARY KEY
+    session_id TEXT NOT NULL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
