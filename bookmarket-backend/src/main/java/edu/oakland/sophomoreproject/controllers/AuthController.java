@@ -29,7 +29,7 @@ public class AuthController {
 		this.sessionsTableAccessor = sessionsTableAccessor;
 	}
 
-	@PostMapping("/api/login")
+	@PostMapping("/api/auth/login")
 	public ResponseEntity<Void> login(
 			HttpServletRequest request,
 			@RequestBody LoginRequest payload
@@ -43,7 +43,7 @@ public class AuthController {
 		return ResponseEntity.ok().headers(httpHeaders).build();
 	}
 
-	@PostMapping("/api/signup")
+	@PostMapping("/api/auth/signup")
 	public ResponseEntity<Void> signup(
 			HttpServletRequest request,
 			@RequestBody SignUpRequest payload

@@ -36,24 +36,26 @@ public class ListingsController {
 		this.listingsTableAccessor = listingsTableAccessor;
 	}
 
-	@GetMapping("/api/listing/{listingId}")
+	@GetMapping("/api/listings/{listingId}")
 	public ResponseEntity<GetListingByIdResponse> getListingById(
 			HttpServletRequest request,
-			@PathVariable("listingId") String listingId
+			@PathVariable("listingId") Integer listingId
 	) {
 		// ... do logic here
+
+		System.out.println(listingId);
 
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/api/listing")
+	@GetMapping("/api/listings")
 	public ResponseEntity<GetAllListingsResponse> getAllListings(HttpServletRequest request) {
 		// ... do logic here
 
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/api/listing")
+	@PostMapping("/api/listings")
 	public ResponseEntity<Void> createListing(
 			HttpServletRequest request,
 			@RequestBody CreateListingRequest payload
@@ -66,10 +68,10 @@ public class ListingsController {
 		return ResponseEntity.ok().headers(headers).build();
 	}
 
-	@PutMapping("/api/listing/{listingId}")
+	@PutMapping("/api/listings/{listingId}")
 	public ResponseEntity<Void> updateListing(
 			HttpServletRequest request,
-			@PathVariable String listingId,
+			@PathVariable Integer listingId,
 			@RequestBody UpdateListingRequest payload
 	) throws SQLException {
 		Session session = sessionAuthorizer.authorize(request);

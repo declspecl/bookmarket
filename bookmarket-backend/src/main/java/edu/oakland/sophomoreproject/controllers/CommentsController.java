@@ -35,17 +35,17 @@ public class CommentsController {
 		this.commentsTableAccessor = commentsTableAccessor;
 	}
 
-	@GetMapping("/api/listing/{listingId}/comment")
+	@GetMapping("/api/listings/{listingId}/comments")
 	public ResponseEntity<GetAllCommentsForListingResponse> getAllCommentsForListing(
 			HttpServletRequest request,
-			@PathVariable("listingId") String listingId
+			@PathVariable("listingId") Integer listingId
 	) {
 		// ... do logic here
 
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/api/listing/{listingId}/comment")
+	@PostMapping("/api/listings/{listingId}/comments")
 	public ResponseEntity<Void> createComment(
 			HttpServletRequest request,
 			@RequestBody CreateCommentRequest payload
@@ -58,11 +58,11 @@ public class CommentsController {
 		return ResponseEntity.ok().headers(headers).build();
 	}
 
-	@PostMapping("/api/listing/{listingId}/comment/{commentId}/reply")
+	@PostMapping("/api/listings/{listingId}/comments/{commentId}/reply")
 	public ResponseEntity<Void> createCommentReply(
 			HttpServletRequest request,
-			@PathVariable("listingId") String listingId,
-			@PathVariable("commentId") String commentId,
+			@PathVariable("listingId") Integer listingId,
+			@PathVariable("commentId") Integer commentId,
 			@RequestBody CreateCommentRequest payload
 	) throws SQLException {
 		Session session = sessionAuthorizer.authorize(request);
