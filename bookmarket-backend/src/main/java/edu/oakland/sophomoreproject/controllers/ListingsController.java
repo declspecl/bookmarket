@@ -8,7 +8,9 @@ import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.dependencies.sqlite.listings.ListingsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
+import edu.oakland.sophomoreproject.model.listings.Listing;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 public class ListingsController {
@@ -26,6 +29,7 @@ public class ListingsController {
 	private final SessionAuthorizer sessionAuthorizer;
 	private final ListingsTableAccessor listingsTableAccessor;
 
+	@Autowired
 	public ListingsController(
 			ControllerUtils controllerUtils,
 			SessionAuthorizer sessionAuthorizer,
@@ -49,10 +53,12 @@ public class ListingsController {
 	}
 
 	@GetMapping("/api/listings")
-	public ResponseEntity<GetAllListingsResponse> getAllListings(HttpServletRequest request) {
-		// ... do logic here
+	public ResponseEntity<GetAllListingsResponse> getAllListings(HttpServletRequest request) throws SQLException {
+		List<Listing> listings = listingsTableAccessor.getAllListings();
 
-		return ResponseEntity.ok().build();
+		GetAllListingsResponse response = new GetAllListingsResponse(listings);
+
+		return ResponseEntity.ok().body(response);
 	}
 
 	@PostMapping("/api/listings")

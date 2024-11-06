@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS listings (
     class_subject TEXT NOT NULL,
     condition TEXT NOT NULL,
     sale_availability TEXT NOT NULL,
+    expires_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (seller_id) REFERENCES users(user_id) ON DELETE SET NULL
 );
