@@ -9,5 +9,6 @@ CREATE TABLE listings (
     class_subject TEXT NOT NULL,                        
     condition TEXT NOT NULL,                    
     sale_availability TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL, 
     FOREIGN KEY (seller_id) REFERENCES users(user_id) ON DELETE SET NULL
 );
