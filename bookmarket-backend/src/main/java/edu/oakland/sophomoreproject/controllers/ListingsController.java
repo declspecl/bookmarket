@@ -7,6 +7,7 @@ import edu.oakland.sophomoreproject.controllers.responses.GetListingByIdResponse
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.dependencies.sqlite.listings.ListingsTableAccessor;
+import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
 import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.model.listings.Listing;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,16 +28,20 @@ import java.util.List;
 public class ListingsController {
 	private final ControllerUtils controllerUtils;
 	private final SessionAuthorizer sessionAuthorizer;
+	/// YOU WILL NEED THIS TO GET THE USER FOR `seller_id`
+	private final UsersTableAccessor usersTableAccessor;
 	private final ListingsTableAccessor listingsTableAccessor;
 
 	@Autowired
 	public ListingsController(
 			ControllerUtils controllerUtils,
 			SessionAuthorizer sessionAuthorizer,
+			UsersTableAccessor usersTableAccessor,
 			ListingsTableAccessor listingsTableAccessor
 	) {
 		this.controllerUtils = controllerUtils;
 		this.sessionAuthorizer = sessionAuthorizer;
+		this.usersTableAccessor = usersTableAccessor;
 		this.listingsTableAccessor = listingsTableAccessor;
 	}
 

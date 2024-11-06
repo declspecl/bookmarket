@@ -51,7 +51,7 @@ public class SessionsTableAccessor extends TableAccessor {
 		return new Session(resultSessionId, resultCreatedAt, resultExpiresAt, resultUserId);
 	}
 
-	public void insertSession(Session session) throws SQLException {
+	public void createSession(Session session) throws SQLException {
 		String sql = "INSERT INTO sessions (session_id, expires_at, user_id) VALUES (?, ?, ?)";
 
 		Connection connection = getDatabaseConnection();

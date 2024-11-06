@@ -2,11 +2,11 @@ package edu.oakland.sophomoreproject.dependencies.sqlite.listings;
 
 import edu.oakland.sophomoreproject.dependencies.sqlite.TableAccessor;
 import edu.oakland.sophomoreproject.model.listings.Listing;
+import edu.oakland.sophomoreproject.model.listings.ListingWithoutId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.sqlite.SQLiteConfig;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,5 +63,15 @@ public class ListingsTableAccessor extends TableAccessor {
 		return listings;
 	}
 
-	// TODO
+	public Listing getListingById(int listingId) {
+		// TODO
+		return null;
+	}
+
+	/// this object is ListingWithoutId because we will get the ID from SQL after creating it
+	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
+	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
+	public void createListing(ListingWithoutId listingWithoutId) {
+		// TODO
+	}
 }
