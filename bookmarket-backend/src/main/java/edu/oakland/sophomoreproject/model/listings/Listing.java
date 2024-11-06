@@ -1,6 +1,5 @@
 package edu.oakland.sophomoreproject.model.listings;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 public class Listing {
@@ -8,12 +7,25 @@ public class Listing {
     private String title;
     private String description;
     private String primaryAuthorName;
-    private BigDecimal price;
-    private Condition condition;
+    private float price;
+    private String condition;
     private Instant createdAt;
-    private Availability availability;
-    private ClassSubject classSubject;
+    private String availability;
+    private String classSubject;
     private Integer sellerId;
+
+    public Listing(Integer id, String title, String description, String primaryAuthorName, float price, String condition, Instant createdAt, String availability, String classSubject, Integer sellerId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.primaryAuthorName = primaryAuthorName;
+        this.price = price;
+        this.condition = condition;
+        this.createdAt = createdAt;
+        this.availability = availability;
+        this.classSubject = classSubject;
+        this.sellerId = sellerId;
+    }
 
     public Integer getId() {
         return id;
@@ -47,19 +59,19 @@ public class Listing {
         this.primaryAuthorName = primaryAuthorName;
     }
 
-    public BigDecimal getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
-    public Condition getCondition() {
+    public String getCondition() {
         return condition;
     }
 
-    public void setCondition(Condition condition) {
+    public void setCondition(String condition) {
         this.condition = condition;
     }
 
@@ -71,19 +83,19 @@ public class Listing {
         this.createdAt = createdAt;
     }
 
-    public Availability getAvailability() {
+    public String getAvailability() {
         return availability;
     }
 
-    public void setAvailability(Availability availability) {
+    public void setAvailability(String availability) {
         this.availability = availability;
     }
 
-    public ClassSubject getClassSubject() {
+    public String getClassSubject() {
         return classSubject;
     }
 
-    public void setClassSubject(ClassSubject classSubject) {
+    public void setClassSubject(String classSubject) {
         this.classSubject = classSubject;
     }
 

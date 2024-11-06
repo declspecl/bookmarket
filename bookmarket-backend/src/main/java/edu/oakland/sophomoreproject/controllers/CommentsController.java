@@ -4,6 +4,7 @@ import edu.oakland.sophomoreproject.controllers.requests.CreateCommentRequest;
 import edu.oakland.sophomoreproject.controllers.responses.GetAllCommentsForListingResponse;
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
+import edu.oakland.sophomoreproject.controllers.responses.GetAllListingsResponse;
 import edu.oakland.sophomoreproject.dependencies.sqlite.comments.CommentsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +42,6 @@ public class CommentsController {
 			@PathVariable("listingId") Integer listingId
 	) {
 		// ... do logic here
-
 		return ResponseEntity.ok().build();
 	}
 

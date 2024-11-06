@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 // this @Component annotation tells spring to create an instance/object of this class in the global object pool
 @Component
@@ -31,7 +32,13 @@ public class SessionAuthorizer {
 
 	public Session authorize(HttpServletRequest request) throws UnauthorizedException, SQLException {
 		// check for if HTTP request has a session cookie
-		Cookie sessionCookie = cookieExtractor.extractSessionCookie(request);
+		Cookie sessionCookie;
+		try {
+			sessionCookie = cookieExtractor.extractSessionCookie(request);
+		}
+		catch (Exception e) {
+			throw new UnauthorizedException("Session cookie was not present in HTTP request");
+		}
 		if (sessionCookie == null) {
 			throw new UnauthorizedException("Session cookie was not present in HTTP request");
 		}
