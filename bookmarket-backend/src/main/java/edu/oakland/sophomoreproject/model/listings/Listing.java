@@ -6,7 +6,7 @@ public class Listing {
     private Integer id;
     private String title;
     private String description;
-    private String primaryAuthorName;
+    private String authorName;
     private float price;
     private String condition;
     private Instant createdAt;
@@ -14,11 +14,11 @@ public class Listing {
     private String classSubject;
     private Integer sellerId;
 
-    public Listing(Integer id, String title, String description, String primaryAuthorName, float price, String condition, Instant createdAt, String availability, String classSubject, Integer sellerId) {
+    public Listing(Integer id, String title, String description, String authorName, float price, String condition, Instant createdAt, String availability, String classSubject, Integer sellerId) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.primaryAuthorName = primaryAuthorName;
+        this.authorName = authorName;
         this.price = price;
         this.condition = condition;
         this.createdAt = createdAt;
@@ -51,12 +51,12 @@ public class Listing {
         this.description = description;
     }
 
-    public String getPrimaryAuthorName() {
-        return primaryAuthorName;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setPrimaryAuthorName(String primaryAuthorName) {
-        this.primaryAuthorName = primaryAuthorName;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public float getPrice() {

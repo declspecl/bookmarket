@@ -1,6 +1,6 @@
 package edu.oakland.sophomoreproject.authorization;
 
-import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
+import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.SessionsTableAccessor;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 // this @Component annotation tells spring to create an instance/object of this class in the global object pool
 @Component

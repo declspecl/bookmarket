@@ -1,6 +1,6 @@
 package edu.oakland.sophomoreproject.components;
 
-import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
+import edu.oakland.sophomoreproject.model.sessions.Session;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 

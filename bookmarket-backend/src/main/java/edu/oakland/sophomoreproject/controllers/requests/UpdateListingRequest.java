@@ -6,6 +6,29 @@ import java.math.BigDecimal;
 
 @JsonDeserialize
 public class UpdateListingRequest {
+    /// this might be `null`
     private BigDecimal price;
-    private Availability availability;
+    /// this might be `null`
+    private String availability;
+
+    public UpdateListingRequest(BigDecimal price, String availability) {
+        this.price = price;
+        this.availability = availability;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
 }

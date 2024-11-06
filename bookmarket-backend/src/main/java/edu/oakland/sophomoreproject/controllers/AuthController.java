@@ -3,7 +3,7 @@ package edu.oakland.sophomoreproject.controllers;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.controllers.requests.LoginRequest;
 import edu.oakland.sophomoreproject.controllers.requests.SignUpRequest;
-import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.Session;
+import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.SessionsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,5 +55,13 @@ public class AuthController {
 
 		HttpHeaders httpHeaders = controllerUtils.getHeadersWithSessionCookie(session);
 		return ResponseEntity.ok().headers(httpHeaders).build();
+	}
+
+	@PostMapping("/api/auth/logout")
+	public ResponseEntity<Void> logout(HttpServletRequest request) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Set-Cookie", "session='';Expires=0");
+
+		return ResponseEntity.ok().headers(headers).build();
 	}
 }
