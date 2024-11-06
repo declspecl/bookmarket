@@ -43,10 +43,11 @@ public class SessionsTableAccessor extends TableAccessor {
 		}
 
 		UUID resultSessionId = UUID.fromString(results.getString("session_id"));
+		Instant resultCreatedAt = Instant.parse(results.getString("created_at"));
 		Instant resultExpiresAt = Instant.parse(results.getString("expires_at"));
 		int resultUserId = results.getInt("user_id");
 
-		return new Session(resultSessionId, resultExpiresAt, resultUserId);
+		return new Session(resultSessionId, resultCreatedAt, resultExpiresAt, resultUserId);
 	}
 
 	public void insertSession(Session session) throws SQLException {

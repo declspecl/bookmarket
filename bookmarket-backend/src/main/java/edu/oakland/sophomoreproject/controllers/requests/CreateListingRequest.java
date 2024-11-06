@@ -1,9 +1,6 @@
 package edu.oakland.sophomoreproject.controllers.requests;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import edu.oakland.sophomoreproject.model.listings.Availability;
-import edu.oakland.sophomoreproject.model.listings.ClassSubject;
-import edu.oakland.sophomoreproject.model.listings.Condition;
 
 import java.math.BigDecimal;
 import java.time.Instant;

@@ -6,11 +6,13 @@ import java.util.UUID;
 
 public class Session {
 	private final UUID sessionId;
+	private Instant createdAt;
 	private Instant expiresAt;
 	private final int userId;
 
-	public Session(UUID sessionId, Instant expiresAt, int userId) {
+	public Session(UUID sessionId, Instant createdAt, Instant expiresAt, int userId) {
 		this.sessionId = sessionId;
+		this.createdAt = createdAt;
 		this.expiresAt = expiresAt;
 		this.userId = userId;
 	}
@@ -18,9 +20,10 @@ public class Session {
 	/// Creates a new session object with a random session ID that expires in one hour
 	public static Session newRandomSession(int userId) {
 		UUID sessionId = UUID.randomUUID();
-		Instant inOneHour = Instant.now().plus(1, ChronoUnit.HOURS);
+		Instant now = Instant.now();
+		Instant inOneHour = now.plus(1, ChronoUnit.HOURS);
 
-		return new Session(sessionId, inOneHour, userId);
+		return new Session(sessionId, now, inOneHour, userId);
 	}
 
 	public void refresh() {
@@ -33,8 +36,16 @@ public class Session {
 		return sessionId;
 	}
 
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
 	public Instant getExpiresAt() {
 		return expiresAt;
+	}
+
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public void setExpiresAt(Instant expiresAt) {
