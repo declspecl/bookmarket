@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
+
 @RestController
 public class AuthController {
 	private final ControllerUtils controllerUtils;
@@ -33,7 +35,7 @@ public class AuthController {
 	public ResponseEntity<Void> login(
 			HttpServletRequest request,
 			@RequestBody LoginRequest payload
-	) {
+) throws SQLException {
 		int userId = 0;
 		// ... do logic here and get the correct user id
 
@@ -47,7 +49,7 @@ public class AuthController {
 	public ResponseEntity<Void> signup(
 			HttpServletRequest request,
 			@RequestBody SignUpRequest payload
-	) {
+	) throws SQLException {
 		int userId = 0;
 		// ... do logic here and get the correct user id
 

@@ -12,6 +12,7 @@ import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.model.listings.Listing;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.sql.init.SqlR2dbcScriptDatabaseInitializer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,7 @@ public class ListingsController {
 	public ResponseEntity<GetListingByIdResponse> getListingById(
 			HttpServletRequest request,
 			@PathVariable("listingId") Integer listingId
-	) {
+	) throws SQLException {
 		// ... do logic here
 
 		System.out.println(listingId);
@@ -71,7 +72,13 @@ public class ListingsController {
 			HttpServletRequest request,
 			@RequestBody CreateListingRequest payload
 	) throws SQLException {
-		Session session = sessionAuthorizer.authorize(request);
+		Session session;
+		try {
+			session = sessionAuthorizer.authorize(request);
+		}
+		catch (Exception exception) {
+			return ResponseEntity.status(403).build();
+		}
 
 		// ... do logic here
 

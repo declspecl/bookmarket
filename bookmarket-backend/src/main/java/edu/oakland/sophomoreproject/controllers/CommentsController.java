@@ -45,7 +45,7 @@ public class CommentsController {
 	public ResponseEntity<GetAllCommentsForListingResponse> getAllCommentsForListing(
 			HttpServletRequest request,
 			@PathVariable("listingId") Integer listingId
-	) {
+	) throws SQLException {
 		// ... do logic here
 		return ResponseEntity.ok().build();
 	}
@@ -55,7 +55,13 @@ public class CommentsController {
 			HttpServletRequest request,
 			@RequestBody CreateCommentRequest payload
 	) throws SQLException {
-		Session session = sessionAuthorizer.authorize(request);
+		Session session;
+		try {
+			session = sessionAuthorizer.authorize(request);
+		}
+		catch (Exception exception) {
+			return ResponseEntity.status(403).build();
+		}
 
 		// ... do logic here
 
@@ -70,7 +76,13 @@ public class CommentsController {
 			@PathVariable("commentId") Integer commentId,
 			@RequestBody CreateCommentRequest payload
 	) throws SQLException {
-		Session session = sessionAuthorizer.authorize(request);
+		Session session;
+		try {
+			session = sessionAuthorizer.authorize(request);
+		}
+		catch (Exception exception) {
+			return ResponseEntity.status(403).build();
+		}
 
 		// ... do logic here
 
