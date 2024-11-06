@@ -6,7 +6,6 @@ import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.dependencies.sqlite.comments.CommentsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
-import edu.oakland.sophomoreproject.model.auth.User;
 import edu.oakland.sophomoreproject.model.sessions.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import java.sql.SQLException;
 public class CommentsController {
 	private final ControllerUtils controllerUtils;
 	private final SessionAuthorizer sessionAuthorizer;
-	/// YOU WILL NEED THIS TO GET THE USER FOR `creator_id`
 	private final UsersTableAccessor usersTableAccessor;
 	private final CommentsTableAccessor commentsTableAccessor;
 

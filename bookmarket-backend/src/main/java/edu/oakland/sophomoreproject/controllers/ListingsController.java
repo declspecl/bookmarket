@@ -29,7 +29,6 @@ import java.util.List;
 public class ListingsController {
 	private final ControllerUtils controllerUtils;
 	private final SessionAuthorizer sessionAuthorizer;
-	/// YOU WILL NEED THIS TO GET THE USER FOR `seller_id`
 	private final UsersTableAccessor usersTableAccessor;
 	private final ListingsTableAccessor listingsTableAccessor;
 
