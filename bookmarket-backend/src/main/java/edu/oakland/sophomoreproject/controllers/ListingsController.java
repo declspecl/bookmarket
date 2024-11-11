@@ -79,7 +79,13 @@ public class ListingsController {
 			return ResponseEntity.status(403).build();
 		}
 
-		// ... do logic here
+		String title = payload.getTitle();
+		String author = session.getEmail(); // Just used email for now can change to name or something else if needed.
+		String classSubject = payload.getClassSubject();
+		String description = payload.getDescription();
+		String condition = payload.getCondition();
+		String saleAvailability = payload.getSaleAvailability();
+		int sellerId = session.getUserId();
 
 		HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
 		return ResponseEntity.ok().headers(headers).build();

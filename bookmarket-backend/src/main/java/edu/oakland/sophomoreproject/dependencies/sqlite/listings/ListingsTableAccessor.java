@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.sqlite.SQLiteConfig;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +69,22 @@ public class ListingsTableAccessor extends TableAccessor {
 	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
 	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
 	public void createListing(ListingWithoutId listingWithoutId) {
-		// TODO
+		String sql ="INSERT INTO listings (title, author, description, classSubject, price, condition, createdAt, saleAvailability, sellerId" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		Connection connection = getDatabaseConnection();
+		PreparedStatement sqlQuery = connection.prepareStatement(sql);
+
+		sqlQuery.setString(1, title);
+		sqlQuery.setString(2, author);
+		sqlQuery.setString(3, classSubject);
+		sqlQuery.setString(4,description);
+		sqlQuery.setFloat(5, price);
+		sqlQuery.setString(6, condition);
+		sqlQuery.setTimestamp(7, Timestamp.from(Instant.now()));
+		sqlQuery.setString(8, saleAvailability);
+		sqlQuery.setInt(9, sellerId);
+
+		sqlQuery.executeUpdate();
+
 	}
 }
