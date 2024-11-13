@@ -13,7 +13,6 @@ import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.model.listings.Listing;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.sql.init.SqlR2dbcScriptDatabaseInitializer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,13 +54,11 @@ public class ListingsController {
 	) throws SQLException {
 		Listing listing = listingsTableAccessor.getListingById(listingId);
 
-		System.out.println(listingId);
-
 		if (listing == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
-		GetAllListingsResponse response = new GetAllListingsResponse(listing);
 
+		GetListingByIdResponse response = new GetListingByIdResponse(listing);
 		return ResponseEntity.ok().body(response);
 	}
 
@@ -70,7 +67,6 @@ public class ListingsController {
 		List<Listing> listings = listingsTableAccessor.getAllListings();
 
 		GetAllListingsResponse response = new GetAllListingsResponse(listings);
-
 		return ResponseEntity.ok().body(response);
 	}
 
@@ -109,11 +105,8 @@ public class ListingsController {
 				sellerId
 		);
 
-		try {
-			listingsTableAccessor.createListing(listingWithoutId);
-		} catch (SQLException e){
-			return ResponseEntity.status(500).build();
-		}
+		listingsTableAccessor.createListing(listingWithoutId);
+
 		HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
 		return ResponseEntity.ok().headers(headers).build();
 	}

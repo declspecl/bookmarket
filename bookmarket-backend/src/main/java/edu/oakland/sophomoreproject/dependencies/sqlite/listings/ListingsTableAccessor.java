@@ -61,40 +61,40 @@ public class ListingsTableAccessor extends TableAccessor {
 	}
 
 	public Listing getListingById(int listingId) throws SQLException {
-		String sql = "SELECT * FROM listings WHERE listing_id = ?",
+		String sql = "SELECT * FROM listings WHERE listing_id = ?";
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
 
 		statement.setInt(1, listingId);
 
-		try(ResultSet resultSet = statement.executeQuery()) {
-			if(resultSet.next()) {
-				String author = results.getString("author");
-				String title = results.getString("title");
-				float price = results.getFloat("price");
-				String description = results.getString("description");
-				int sellerId = results.getInt("seller_id");
-				String classSubject = results.getString("class_subject");
-				String condition = results.getString("condition");
-				String saleAvailability = results.getString("sale_availability");
-				Instant createdAt = Instant.parse(results.getString("created_at"));
+		ResultSet results = statement.executeQuery();
 
-				return new Listing(
-						listingId,
-						author,
-						title,
-						price,
-						description,
-						sellerId,
-						classSubject,
-						condition,
-						saleAvailability,
-						createdAt
+		if (results.next()) {
+			String author = results.getString("author");
+			String title = results.getString("title");
+			float price = results.getFloat("price");
+			String description = results.getString("description");
+			int sellerId = results.getInt("seller_id");
+			String classSubject = results.getString("class_subject");
+			String condition = results.getString("condition");
+			String saleAvailability = results.getString("sale_availability");
+			Instant createdAt = Instant.parse(results.getString("created_at"));
 
-						);
-			} else {
-				System.out.println("No listing found with this ID:" + listingId);
+			return new Listing(
+					listingId,
+					title,
+					description,
+					author,
+					price,
+					condition,
+					createdAt,
+					saleAvailability,
+					classSubject,
+					sellerId
+			);
+		}
+
 		return null;
 	}
 
@@ -102,7 +102,7 @@ public class ListingsTableAccessor extends TableAccessor {
 	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
 	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
 	public void createListing(ListingWithoutId listingWithoutId) throws SQLException {
-		String sql ="INSERT INTO listings (title, author, description, class_subject, price, condition, created_at, sale_availability, seller_id, VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO listings (title, author, description, class_subject, price, condition, created_at, sale_availability, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement sqlQuery = connection.prepareStatement(sql);
@@ -110,16 +110,13 @@ public class ListingsTableAccessor extends TableAccessor {
 		sqlQuery.setString(1, listingWithoutId.getTitle());
 		sqlQuery.setString(2, listingWithoutId.getAuthorName());
 		sqlQuery.setString(3, listingWithoutId.getClassSubject());
-		sqlQuery.setString(4,listingWithoutId.getDescription());
+		sqlQuery.setString(4, listingWithoutId.getDescription());
 		sqlQuery.setFloat(5, listingWithoutId.getPrice());
 		sqlQuery.setString(6, listingWithoutId.getCondition());
 		sqlQuery.setString(7, Instant.now().toString());
 		sqlQuery.setString(8, listingWithoutId.getAvailability());
 		sqlQuery.setInt(9, listingWithoutId.getSellerId());
 
-
-
-		sqlQuery.executeQuery();
-
+		sqlQuery.execute();
 	}
-
+}
