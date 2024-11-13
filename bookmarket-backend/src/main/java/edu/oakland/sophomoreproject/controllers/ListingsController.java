@@ -12,6 +12,8 @@ import edu.oakland.sophomoreproject.model.listings.ListingWithoutId;
 import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.model.listings.Listing;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,8 @@ import java.util.List;
 
 @RestController
 public class ListingsController {
+	private static final Logger log = LogManager.getLogger(ListingsTableAccessor.class);
+
 	private final ControllerUtils controllerUtils;
 	private final SessionAuthorizer sessionAuthorizer;
 	private final UsersTableAccessor usersTableAccessor;
@@ -52,11 +56,9 @@ public class ListingsController {
 			HttpServletRequest request,
 			@PathVariable("listingId") Integer listingId
 	) throws SQLException {
-		Listing listing = listingsTableAccessor.getListingById(listingId);
+		log.info("Got getListingById request for listing with ID {}", listingId);
 
-		if (listing == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
+		Listing listing = listingsTableAccessor.getListingById(listingId);
 
 		GetListingByIdResponse response = new GetListingByIdResponse(listing);
 		return ResponseEntity.ok().body(response);
@@ -64,6 +66,8 @@ public class ListingsController {
 
 	@GetMapping("/api/listings")
 	public ResponseEntity<GetAllListingsResponse> getAllListings(HttpServletRequest request) throws SQLException {
+		log.info("Got getAllListings request");
+
 		List<Listing> listings = listingsTableAccessor.getAllListings();
 
 		GetAllListingsResponse response = new GetAllListingsResponse(listings);
@@ -75,10 +79,13 @@ public class ListingsController {
 			HttpServletRequest request,
 			@RequestBody CreateListingRequest payload
 	) throws SQLException {
+		log.info("Got createListing request with payload {}", payload);
+
 		Session session;
 		try {
 			session = sessionAuthorizer.authorize(request);
 		} catch (Exception exception) {
+			log.warn("Got createListingRequest from unauthorized user");
 			return ResponseEntity.status(403).build();
 		}
 
