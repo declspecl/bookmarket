@@ -63,15 +63,48 @@ public class ListingsTableAccessor extends TableAccessor {
 		return listings;
 	}
 
-	public Listing getListingById(int listingId) {
-		// TODO
+	public Listing getListingById(int listingId) throws SQLException {
+		String sql = "SELECT * FROM listings WHERE listing_id = ?",
+
+		Connection connection = getDatabaseConnection();
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		statement.setInt(1, listingId);
+
+		try(ResultSet resultSet = statement.executeQuery()) {
+			if(resultSet.next()) {
+				String author = results.getString("author");
+				String title = results.getString("title");
+				float price = results.getFloat("price");
+				String description = results.getString("description");
+				int sellerId = results.getInt("seller_id");
+				String classSubject = results.getString("class_subject");
+				String condition = results.getString("condition");
+				String saleAvailability = results.getString("sale_availability");
+				Instant createdAt = Instant.parse(results.getString("created_at"));
+
+				return new Listing(
+						listingId,
+						author,
+						title,
+						price,
+						description,
+						sellerId,
+						classSubject,
+						condition,
+						saleAvailability,
+						createdAt
+
+						);
+			} else {
+				System.out.println("No listing found with this ID:" + listingId);
 		return null;
 	}
 
 	/// this object is ListingWithoutId because we will get the ID from SQL after creating it
 	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
 	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
-	public void createListing(ListingWithoutId listingWithoutId) {
-		// TODO
+		public List<Listing> createListing(ListingWithoutId listingWithoutId) throws SQLException {
+
 	}
-}
+
