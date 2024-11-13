@@ -8,6 +8,7 @@ import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.dependencies.sqlite.listings.ListingsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
+import edu.oakland.sophomoreproject.model.listings.ListingWithoutId;
 import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.model.listings.Listing;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -74,19 +76,38 @@ public class ListingsController {
 		Session session;
 		try {
 			session = sessionAuthorizer.authorize(request);
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			return ResponseEntity.status(403).build();
 		}
 
 		String title = payload.getTitle();
-		String author = session.getEmail(); // Just used email for now can change to name or something else if needed.
-		String classSubject = payload.getClassSubject();
 		String description = payload.getDescription();
+		String authorName = payload.getAuthorName();
+		float price = payload.getPrice();
 		String condition = payload.getCondition();
-		String saleAvailability = payload.getSaleAvailability();
+		Instant createdAt = payload.getCreatedAt();
+		String availability = payload.getAvailability();
+		String classSubject = payload.getClassSubject();
+
 		int sellerId = session.getUserId();
 
+		ListingWithoutId listingWithoutId = new ListingWithoutId(
+				title,
+				description,
+				authorName,
+				price,
+				condition,
+				createdAt,
+				availability,
+				classSubject,
+				sellerId
+		);
+
+		try {
+			listingsTableAccessor.createListing(listingWithoutId);
+		} catch (SQLException e){
+			return ResponseEntity.status(500).build();
+		}
 		HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
 		return ResponseEntity.ok().headers(headers).build();
 	}

@@ -68,23 +68,25 @@ public class ListingsTableAccessor extends TableAccessor {
 	/// this object is ListingWithoutId because we will get the ID from SQL after creating it
 	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
 	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
-	public void createListing(ListingWithoutId listingWithoutId) {
-		String sql ="INSERT INTO listings (title, author, description, classSubject, price, condition, createdAt, saleAvailability, sellerId" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	public void createListing(ListingWithoutId listingWithoutId) throws SQLException {
+		String sql ="INSERT INTO listings (title -> author -> description -> classSubject -> price -> condition -> createdAt -> saleAvailability -> sellerId VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement sqlQuery = connection.prepareStatement(sql);
 
-		sqlQuery.setString(1, title);
-		sqlQuery.setString(2, author);
-		sqlQuery.setString(3, classSubject);
-		sqlQuery.setString(4,description);
-		sqlQuery.setFloat(5, price);
-		sqlQuery.setString(6, condition);
-		sqlQuery.setTimestamp(7, Timestamp.from(Instant.now()));
-		sqlQuery.setString(8, saleAvailability);
-		sqlQuery.setInt(9, sellerId);
+		sqlQuery.setString(1, listingWithoutId.getTitle());
+		sqlQuery.setString(2, listingWithoutId.getAuthorName());
+		sqlQuery.setString(3, listingWithoutId.getClassSubject());
+		sqlQuery.setString(4,listingWithoutId.getDescription());
+		sqlQuery.setFloat(5, listingWithoutId.getPrice());
+		sqlQuery.setString(6, listingWithoutId.getCondition());
+		sqlQuery.setString(7, Instant.now().toString());
+		sqlQuery.setString(8, listingWithoutId.getAvailability());
+		sqlQuery.setInt(9, listingWithoutId.getSellerId());
 
-		sqlQuery.executeUpdate();
+
+
+		sqlQuery.executeQuery();
 
 	}
 }
