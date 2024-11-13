@@ -69,7 +69,7 @@ public class ListingsTableAccessor extends TableAccessor {
 	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
 	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
 	public void createListing(ListingWithoutId listingWithoutId) throws SQLException {
-		String sql ="INSERT INTO listings (title -> author -> description -> classSubject -> price -> condition -> createdAt -> saleAvailability -> sellerId VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql ="INSERT INTO listings (title, author, description, class_subject, price, condition, created_at, sale_availability, seller_id, VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement sqlQuery = connection.prepareStatement(sql);
