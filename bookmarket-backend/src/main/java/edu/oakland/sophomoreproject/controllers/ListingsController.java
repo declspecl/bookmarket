@@ -55,7 +55,7 @@ public class ListingsController {
 
 		System.out.println(listingId);
 
-		if (lisitng == null) {
+		if (listing == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		GetAllListingsResponse response = new GetAllListingsResponse(listing);

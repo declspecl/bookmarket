@@ -64,7 +64,7 @@ public class ListingsTableAccessor extends TableAccessor {
 	}
 
 	public Listing getListingById(int listingId) throws SQLException {
-		String sql = "SELECT * FROM listings WHERE listing_Id = ?",
+		String sql = "SELECT * FROM listings WHERE listing_id = ?",
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
@@ -93,7 +93,7 @@ public class ListingsTableAccessor extends TableAccessor {
 						classSubject,
 						condition,
 						saleAvailability,
-						createdAt,
+						createdAt
 
 						);
 			} else {
@@ -104,7 +104,6 @@ public class ListingsTableAccessor extends TableAccessor {
 	/// this object is ListingWithoutId because we will get the ID from SQL after creating it
 	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
 	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
-	public void createListing(ListingWithoutId listingWithoutId) throws SQLException {
 		public List<Listing> createListing(ListingWithoutId listingWithoutId) throws SQLException {
 
 	}
