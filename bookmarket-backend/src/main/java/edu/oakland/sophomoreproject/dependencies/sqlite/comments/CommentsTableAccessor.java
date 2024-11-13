@@ -30,7 +30,7 @@ public class CommentsTableAccessor extends TableAccessor {
 		while (results.next()) {
 			int commentId = results.getInt("comment_id");
 			String content = results.getString("content");
-         		Instant createdAt = results.getTimestamp("created_at").toInstant();
+         		Instant createdAt = Instant.parse(results.getString("created_at"));
           		int creatorId = results.getInt("creator_id");
           	  	int parentListingId = results.getInt("listing_id");
           	  	Integer parentCommentId = results.getInt("parent_comment_id");
@@ -38,14 +38,14 @@ public class CommentsTableAccessor extends TableAccessor {
             	    parentCommentId = null;
             	}
 
-            Comment comment = new Comment(
-                commentId,
-                content,
-                createdAt,
-                creatorId,
-                parentListingId,
-                parentCommentId
-            );
+            	Comment comment = new Comment(
+                	commentId,
+                	content,
+                	createdAt,
+                	creatorId,
+                	parentListingId,
+                	parentCommentId
+            	);
 
             comments.add(comment);
         }
@@ -58,31 +58,26 @@ public class CommentsTableAccessor extends TableAccessor {
 	/// and parsing the `comment_id` column it returns with `results.getString("comment_id")`
 	/// also you don't need a `createReply` function since the only difference is whether `parentCommentId` is null or not
 	public void createComment(CommentWithoutId commentWithoutId) throws SQLException {
-    // Defines the SQL INSERT statement with RETURNING to get the generated comment_id
     String sql = "INSERT INTO comments (content, created_at, creator_id, listing_id, parent_comment_id) " +
                  "VALUES (?, ?, ?, ?, ?) RETURNING comment_id";
 
     try (Connection connection = getDatabaseConnection();
          PreparedStatement statement = connection.prepareStatement(sql)) {
 
-        // Sets parameters based on CommentWithoutId fields
         statement.setString(1, commentWithoutId.getContent());
-        statement.setTimestamp(2, Timestamp.from(commentWithoutId.getCreatedAt()));
+        statement.setInt(2, commentWithoutId.getCreatedAt().toString());
         statement.setInt(3, commentWithoutId.getCreatorId());
         statement.setInt(4, commentWithoutId.getParentListingId());
         
-        // Sets parentCommentId if it's provided; otherwise, set it to null
         if (commentWithoutId.getParentCommentId() != null) {
             statement.setInt(5, commentWithoutId.getParentCommentId());
         } else {
             statement.setNull(5, java.sql.Types.INTEGER);
         }
 
-        // Executes the insert and retrieve the generated comment_id
         ResultSet results = statement.executeQuery();
         if (results.next()) {
             int generatedId = results.getInt("comment_id");
-            System.out.println("Created comment with ID: " + generatedId);
         }
     }
 }
