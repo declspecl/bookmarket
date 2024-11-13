@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.sqlite.SQLiteConfig;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +101,25 @@ public class ListingsTableAccessor extends TableAccessor {
 	/// this object is ListingWithoutId because we will get the ID from SQL after creating it
 	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
 	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
-		public List<Listing> createListing(ListingWithoutId listingWithoutId) throws SQLException {
+	public void createListing(ListingWithoutId listingWithoutId) throws SQLException {
+		String sql ="INSERT INTO listings (title, author, description, class_subject, price, condition, created_at, sale_availability, seller_id, VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		Connection connection = getDatabaseConnection();
+		PreparedStatement sqlQuery = connection.prepareStatement(sql);
+
+		sqlQuery.setString(1, listingWithoutId.getTitle());
+		sqlQuery.setString(2, listingWithoutId.getAuthorName());
+		sqlQuery.setString(3, listingWithoutId.getClassSubject());
+		sqlQuery.setString(4,listingWithoutId.getDescription());
+		sqlQuery.setFloat(5, listingWithoutId.getPrice());
+		sqlQuery.setString(6, listingWithoutId.getCondition());
+		sqlQuery.setString(7, Instant.now().toString());
+		sqlQuery.setString(8, listingWithoutId.getAvailability());
+		sqlQuery.setInt(9, listingWithoutId.getSellerId());
+
+
+
+		sqlQuery.executeQuery();
 
 	}
 
