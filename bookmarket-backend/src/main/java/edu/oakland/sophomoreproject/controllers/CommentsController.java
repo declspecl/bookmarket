@@ -44,7 +44,8 @@ public class CommentsController {
 			HttpServletRequest request,
 			@PathVariable("listingId") Integer listingId
 	) throws SQLException {
-		// ... do logic here
+		List<Comment> comments = commentsTableAccessor.getAllCommentsForListing(listingId);
+		GetAllCommentsForListingResponse response = new GetAllCommentsForListingResponse(comments);
 		return ResponseEntity.ok().build();
 	}
 
@@ -61,7 +62,14 @@ public class CommentsController {
 			return ResponseEntity.status(403).build();
 		}
 
-		// ... do logic here
+		CommentWithoutId newComment = new CommentWithoutId(
+        	payload.getContent(),
+        	payload.getCreatedAt() != null ? payload.getCreatedAt() : Instant.now(),
+        	session.getUserId(),
+        	listingId,
+        	null
+    		);
+    		commentsTableAccessor.createComment(newComment);
 
 		HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
 		return ResponseEntity.ok().headers(headers).build();
@@ -81,9 +89,16 @@ public class CommentsController {
 		catch (Exception exception) {
 			return ResponseEntity.status(403).build();
 		}
+		
+	CommentWithoutId replyComment = new CommentWithoutId(
+        payload.getContent(),
+        payload.getCreatedAt() != null ? payload.getCreatedAt() : Instant.now(),
+        session.getUserId(),
+        listingId,
+        commentId
+    	);
 
-		// ... do logic here
-
+    		commentsTableAccessor.createComment(replyComment);
 		HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
 		return ResponseEntity.ok().headers(headers).build();
 	}
