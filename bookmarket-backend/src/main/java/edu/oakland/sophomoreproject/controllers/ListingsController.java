@@ -2,6 +2,7 @@ package edu.oakland.sophomoreproject.controllers;
 
 import edu.oakland.sophomoreproject.controllers.requests.CreateListingRequest;
 import edu.oakland.sophomoreproject.controllers.requests.UpdateListingRequest;
+import edu.oakland.sophomoreproject.controllers.responses.CreateListingResponse;
 import edu.oakland.sophomoreproject.controllers.responses.GetAllListingsResponse;
 import edu.oakland.sophomoreproject.controllers.responses.GetListingByIdResponse;
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
@@ -16,7 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,7 +75,7 @@ public class ListingsController {
 	}
 
 	@PostMapping("/api/listings")
-	public ResponseEntity<Void> createListing(
+	public ResponseEntity<CreateListingResponse> createListing(
 			HttpServletRequest request,
 			@RequestBody CreateListingRequest payload
 	) throws SQLException {
@@ -112,10 +112,25 @@ public class ListingsController {
 				sellerId
 		);
 
-		listingsTableAccessor.createListing(listingWithoutId);
+		int listingId = listingsTableAccessor.createListing(listingWithoutId);
+
+		Listing listing = new Listing(
+				listingId,
+				title,
+				description,
+				authorName,
+				price,
+				condition,
+				createdAt,
+				availability,
+				classSubject,
+				sellerId
+		);
+
+		CreateListingResponse response = new CreateListingResponse(listing);
 
 		HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
-		return ResponseEntity.ok().headers(headers).build();
+		return ResponseEntity.ok().headers(headers).body(response);
 	}
 
 	@PutMapping("/api/listings/{listingId}")

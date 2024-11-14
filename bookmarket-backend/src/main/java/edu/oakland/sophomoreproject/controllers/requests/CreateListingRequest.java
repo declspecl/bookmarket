@@ -1,10 +1,15 @@
 package edu.oakland.sophomoreproject.controllers.requests;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
 @JsonDeserialize
 public class CreateListingRequest {
 	private String title;

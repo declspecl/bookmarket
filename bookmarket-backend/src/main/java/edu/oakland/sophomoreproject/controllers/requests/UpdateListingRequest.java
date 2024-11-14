@@ -1,9 +1,15 @@
 package edu.oakland.sophomoreproject.controllers.requests;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
 @JsonDeserialize
 public class UpdateListingRequest {
     /// this might be `null`

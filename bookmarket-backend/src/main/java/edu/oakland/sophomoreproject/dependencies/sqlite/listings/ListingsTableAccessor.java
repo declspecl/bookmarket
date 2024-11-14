@@ -61,7 +61,7 @@ public class ListingsTableAccessor extends TableAccessor {
 	}
 
 	public Listing getListingById(int listingId) throws SQLException {
-		String sql = "SELECT * FROM listings WHERE listing_id = ?";
+		String sql = "SELECT * FROM listings WHERE listing_id = ? LIMIT 1";
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
@@ -98,11 +98,8 @@ public class ListingsTableAccessor extends TableAccessor {
 		return null;
 	}
 
-	/// this object is ListingWithoutId because we will get the ID from SQL after creating it
-	/// this can be done by doing `INSERT INTO listings ... RETURNING listing_id`
-	/// and parsing the `listing_id` column it returns with `results.getString("listing_id")`
-	public void createListing(ListingWithoutId listingWithoutId) throws SQLException {
-		String sql = "INSERT INTO listings (title, author, description, class_subject, price, condition, created_at, sale_availability, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	public int createListing(ListingWithoutId listingWithoutId) throws SQLException {
+		String sql = "INSERT INTO listings (title, author, description, class_subject, price, condition, created_at, sale_availability, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING listing_id";
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement sqlQuery = connection.prepareStatement(sql);
@@ -117,6 +114,7 @@ public class ListingsTableAccessor extends TableAccessor {
 		sqlQuery.setString(8, listingWithoutId.getAvailability());
 		sqlQuery.setInt(9, listingWithoutId.getSellerId());
 
-		sqlQuery.execute();
+		ResultSet results = sqlQuery.executeQuery();
+		return results.getInt("listing_id");
 	}
 }

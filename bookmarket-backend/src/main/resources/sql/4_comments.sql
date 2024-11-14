@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS comments (
     comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    parent_comment_id INTEGER,
+    parent_comment_id INTEGER NULL,
     parent_listing_id INTEGER NOT NULL,
     creator_id INTEGER NOT NULL,
     content TEXT NOT NULL,
