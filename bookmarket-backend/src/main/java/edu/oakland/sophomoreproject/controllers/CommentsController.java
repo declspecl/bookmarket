@@ -74,11 +74,11 @@ public class CommentsController {
         return ResponseEntity.ok().headers(headers).build();
     }
 
-    @PostMapping("/api/listings/{listingId}/comments/{commentId}/reply")
+    @PostMapping("/api/listings/{listingId}/comments/{parentCommentId}/reply")
     public ResponseEntity<Void> createCommentReply(
             HttpServletRequest request,
             @PathVariable("listingId") Integer listingId,
-            @PathVariable("commentId") Integer commentId,
+            @PathVariable("parentCommentId") Integer parentCommentId,
             @RequestBody CreateCommentRequest payload
     ) throws SQLException {
         Session session;
@@ -93,7 +93,7 @@ public class CommentsController {
                 payload.getCreatedAt() != null ? payload.getCreatedAt() : Instant.now(),
                 session.getUserId(),
                 listingId,
-                commentId
+                parentCommentId
         );
 
         commentsTableAccessor.createComment(replyComment);
