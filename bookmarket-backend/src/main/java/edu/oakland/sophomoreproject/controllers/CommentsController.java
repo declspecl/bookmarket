@@ -21,70 +21,83 @@ import java.sql.SQLException;
 
 @RestController
 public class CommentsController {
-	private final ControllerUtils controllerUtils;
-	private final SessionAuthorizer sessionAuthorizer;
-	private final UsersTableAccessor usersTableAccessor;
-	private final CommentsTableAccessor commentsTableAccessor;
+    private final ControllerUtils controllerUtils;
+    private final SessionAuthorizer sessionAuthorizer;
+    private final UsersTableAccessor usersTableAccessor;
+    private final CommentsTableAccessor commentsTableAccessor;
 
-	@Autowired
-	public CommentsController(
-			ControllerUtils controllerUtils,
-			SessionAuthorizer sessionAuthorizer,
-			UsersTableAccessor usersTableAccessor,
-			CommentsTableAccessor commentsTableAccessor
-	) {
-		this.controllerUtils = controllerUtils;
-		this.sessionAuthorizer = sessionAuthorizer;
-		this.usersTableAccessor = usersTableAccessor;
-		this.commentsTableAccessor = commentsTableAccessor;
-	}
+    @Autowired
+    public CommentsController(
+            ControllerUtils controllerUtils,
+            SessionAuthorizer sessionAuthorizer,
+            UsersTableAccessor usersTableAccessor,
+            CommentsTableAccessor commentsTableAccessor
+    ) {
+        this.controllerUtils = controllerUtils;
+        this.sessionAuthorizer = sessionAuthorizer;
+        this.usersTableAccessor = usersTableAccessor;
+        this.commentsTableAccessor = commentsTableAccessor;
+    }
 
-	@GetMapping("/api/listings/{listingId}/comments")
-	public ResponseEntity<GetAllCommentsForListingResponse> getAllCommentsForListing(
-			HttpServletRequest request,
-			@PathVariable("listingId") Integer listingId
-	) throws SQLException {
-		// ... do logic here
-		return ResponseEntity.ok().build();
-	}
+    @GetMapping("/api/listings/{listingId}/comments")
+    public ResponseEntity<GetAllCommentsForListingResponse> getAllCommentsForListing(
+            HttpServletRequest request,
+            @PathVariable("listingId") Integer listingId
+    ) throws SQLException {
+        List<Comment> comments = commentsTableAccessor.getAllCommentsForListing(listingId);
+        GetAllCommentsForListingResponse response = new GetAllCommentsForListingResponse(comments);
+        return ResponseEntity.ok().body(response);
+    }
 
-	@PostMapping("/api/listings/{listingId}/comments")
-	public ResponseEntity<Void> createComment(
-			HttpServletRequest request,
-			@RequestBody CreateCommentRequest payload
-	) throws SQLException {
-		Session session;
-		try {
-			session = sessionAuthorizer.authorize(request);
-		}
-		catch (Exception exception) {
-			return ResponseEntity.status(403).build();
-		}
+    @PostMapping("/api/listings/{listingId}/comments")
+    public ResponseEntity<Void> createComment(
+            HttpServletRequest request,
+            @RequestBody CreateCommentRequest payload
+    ) throws SQLException {
+        Session session;
+        try {
+            session = sessionAuthorizer.authorize(request);
+        } catch (Exception exception) {
+            return ResponseEntity.status(403).build();
+        }
 
-		// ... do logic here
+        CommentWithoutId newComment = new CommentWithoutId(
+                payload.getContent(),
+                payload.getCreatedAt() != null ? payload.getCreatedAt() : Instant.now(),
+                session.getUserId(),
+                listingId,
+                null
+        );
+        commentsTableAccessor.createComment(newComment);
 
-		HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
-		return ResponseEntity.ok().headers(headers).build();
-	}
+        HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
+        return ResponseEntity.ok().headers(headers).build();
+    }
 
-	@PostMapping("/api/listings/{listingId}/comments/{commentId}/reply")
-	public ResponseEntity<Void> createCommentReply(
-			HttpServletRequest request,
-			@PathVariable("listingId") Integer listingId,
-			@PathVariable("commentId") Integer commentId,
-			@RequestBody CreateCommentRequest payload
-	) throws SQLException {
-		Session session;
-		try {
-			session = sessionAuthorizer.authorize(request);
-		}
-		catch (Exception exception) {
-			return ResponseEntity.status(403).build();
-		}
+    @PostMapping("/api/listings/{listingId}/comments/{parentCommentId}/reply")
+    public ResponseEntity<Void> createCommentReply(
+            HttpServletRequest request,
+            @PathVariable("listingId") Integer listingId,
+            @PathVariable("parentCommentId") Integer parentCommentId,
+            @RequestBody CreateCommentRequest payload
+    ) throws SQLException {
+        Session session;
+        try {
+            session = sessionAuthorizer.authorize(request);
+        } catch (Exception exception) {
+            return ResponseEntity.status(403).build();
+        }
 
-		// ... do logic here
+        CommentWithoutId replyComment = new CommentWithoutId(
+                payload.getContent(),
+                payload.getCreatedAt() != null ? payload.getCreatedAt() : Instant.now(),
+                session.getUserId(),
+                listingId,
+                parentCommentId
+        );
 
-		HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
-		return ResponseEntity.ok().headers(headers).build();
-	}
+        commentsTableAccessor.createComment(replyComment);
+        HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
+        return ResponseEntity.ok().headers(headers).build();
+    }
 }
