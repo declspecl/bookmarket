@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.Instant;
+
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -14,6 +16,7 @@ public class SignUpRequest {
 	private String firstName;
 	private String lastName;
 	private String password;
+	private Instant createdAt;
 
 	public String getEmail() {
 		return email;
@@ -46,4 +49,9 @@ public class SignUpRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public Instant getCreatedAt() { return createdAt; }
+
+	public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+
 }
