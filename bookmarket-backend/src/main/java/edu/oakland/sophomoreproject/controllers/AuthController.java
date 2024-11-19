@@ -4,7 +4,10 @@ import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.controllers.requests.LoginRequest;
 import edu.oakland.sophomoreproject.controllers.requests.SignUpRequest;
+<<<<<<< HEAD
 import edu.oakland.sophomoreproject.model.auth.User;
+=======
+>>>>>>> 789f5d1 (Add login, signup, logout api; both the authController and usersTableAccessor)
 import edu.oakland.sophomoreproject.model.auth.UserWithoutId;
 import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.SessionsTableAccessor;
@@ -45,6 +48,7 @@ public class AuthController {
 			HttpServletRequest request,
 			@RequestBody LoginRequest payload
 	) throws SQLException {
+<<<<<<< HEAD
 		log.info("Got login request with payload {}", payload);
 
 		User user = usersTableAccessor.getUserByEmailAndPassword(payload.getEmail(), payload.getPassword());
@@ -55,6 +59,11 @@ public class AuthController {
 		Session session = Session.newRandomSession(user.getId());
 		sessionsTableAccessor.createSession(session);
 
+=======
+		int userId = 0;
+		Session session = Session.newRandomSession(userId);
+
+>>>>>>> 789f5d1 (Add login, signup, logout api; both the authController and usersTableAccessor)
         HttpHeaders httpHeaders = controllerUtils.getHeadersWithSessionCookie(session);
 		return ResponseEntity.ok().headers(httpHeaders).build();
 	}
@@ -64,7 +73,23 @@ public class AuthController {
 			HttpServletRequest request,
 			@RequestBody SignUpRequest payload
 	) throws SQLException {
+<<<<<<< HEAD
 		log.info("Got signup request with payload {}", payload);
+=======
+		int userId = 0;
+
+		Instant now = Instant.now();
+
+		UserWithoutId userWithoutId = new UserWithoutId(
+				payload.getFirstName(),
+				payload.getLastName(),
+				payload.getEmail(),
+				payload.getPassword(),
+				payload.getCreatedAt()
+		);
+
+		userId = usersTableAccessor.createUser(userWithoutId);
+>>>>>>> 789f5d1 (Add login, signup, logout api; both the authController and usersTableAccessor)
 
 		UserWithoutId userWithoutId = new UserWithoutId(
 				payload.getFirstName(),
@@ -85,6 +110,7 @@ public class AuthController {
 
 	@PostMapping("/api/auth/logout")
 	public ResponseEntity<Void> logout(HttpServletRequest request) throws SQLException {
+<<<<<<< HEAD
 		Session session = sessionAuthorizer.authorize(request);
 		if (session != null) {
 			sessionsTableAccessor.deleteSessionById(session.getSessionId());
@@ -93,5 +119,17 @@ public class AuthController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Set-Cookie", "session=;Max-Age=0;Path=/");
 		return ResponseEntity.ok().headers(headers).build();
+=======
+			Session session = sessionAuthorizer.authorize(request);
+			if (session != null) {
+				sessionsTableAccessor.deleteSessionById(session.getSessionId());
+			}
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Set-Cookie", "session='';Expires=0");
+
+			return ResponseEntity.ok().headers(headers).build();
+
+>>>>>>> 789f5d1 (Add login, signup, logout api; both the authController and usersTableAccessor)
 	}
 }

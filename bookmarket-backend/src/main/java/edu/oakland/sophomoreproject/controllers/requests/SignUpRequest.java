@@ -16,6 +16,7 @@ public class SignUpRequest {
 	private String firstName;
 	private String lastName;
 	private String password;
+	private Instant createdAt;
 
 	public String getEmail() {
 		return email;
@@ -49,4 +50,11 @@ public class SignUpRequest {
 		this.password = password;
 	}
 
+<<<<<<< HEAD
+=======
+	public Instant getCreatedAt() { return createdAt; }
+
+	public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+
+>>>>>>> 789f5d1 (Add login, signup, logout api; both the authController and usersTableAccessor)
 }
