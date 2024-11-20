@@ -22,19 +22,23 @@ public class UsersTableAccessor extends TableAccessor {
 	}
 
 	public User getUserById(int userId) throws SQLException {
-		String sql = "SELECT * FROM users WHERE userId = ? LIMIT 1";
-
 		Connection connection = getDatabaseConnection();
+		String sql = "SELECT id, first_name, last_name, email, password, created_at FROM users WHERE userId = ? LIMIT 1";
+
 		PreparedStatement sqlQuery = connection.prepareStatement(sql);
 		sqlQuery.setInt(1, userId);
 
 		ResultSet results = sqlQuery.executeQuery();
 
 		if (results.next()) {
+			String firstName = results.getString("first_name");
+			String lastName = results.getString("last_name");
 			String email = results.getString("email");
 			String password = results.getString("password");
-		}
+			Instant createdAt = results.getTimestamp("created_at").toInstant();
 
+			return new User(userId, firstName, lastName, email, password, createdAt);
+		}
 		return null;
 	}
 
@@ -46,8 +50,10 @@ public class UsersTableAccessor extends TableAccessor {
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement sqlStatement = connection.prepareStatement(sql);
-		sqlStatement.setString(1, userWithoutId.getEmail());
-		sqlStatement.setString(2, userWithoutId.getPassword());
+		sqlStatement.setString(1, userWithoutId.getFirstName());
+		sqlStatement.setString(2, userWithoutId.getLastName());
+		sqlStatement.setString(3, userWithoutId.getEmail());
+		sqlStatement.setString(4, userWithoutId.getPassword());
 
 		sqlStatement.executeUpdate();
 
