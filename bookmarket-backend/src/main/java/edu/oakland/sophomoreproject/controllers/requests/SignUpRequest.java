@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.Instant;
+
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -46,4 +48,5 @@ public class SignUpRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 }
