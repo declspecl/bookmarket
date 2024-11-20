@@ -85,7 +85,7 @@ public class AuthController {
 				payload.getLastName(),
 				payload.getEmail(),
 				payload.getPassword(),
-				payload.getCreatedAt()
+				now
 		);
 
 		userId = usersTableAccessor.createUser(userWithoutId);

@@ -52,6 +52,8 @@ public class UsersTableAccessor extends TableAccessor {
 		String sql = "SELECT * FROM users WHERE user_id = ? LIMIT 1";
 
 		Connection connection = getDatabaseConnection();
+		String sql = "SELECT id, first_name, last_name, email, password, created_at FROM users WHERE userId = ? LIMIT 1";
+
 		PreparedStatement sqlQuery = connection.prepareStatement(sql);
 		sqlQuery.setInt(1, userId);
 
@@ -67,6 +69,8 @@ public class UsersTableAccessor extends TableAccessor {
 			return new User(userId, firstName, lastName, email, password, createdAt);
 		}
 
+			return new User(userId, firstName, lastName, email, password, createdAt);
+		}
 		return null;
 	}
 
