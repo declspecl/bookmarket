@@ -17,7 +17,6 @@ public class CreateListingRequest {
 	private String authorName;
 	private float price;
 	private String condition;
-	private Instant createdAt;
 	private String availability;
 	private String classSubject;
 
@@ -27,7 +26,6 @@ public class CreateListingRequest {
 			String authorName,
 			float price,
 			String condition,
-			Instant createdAt,
 			String availability,
 			String classSubject
 	) {
@@ -36,7 +34,6 @@ public class CreateListingRequest {
 		this.authorName = authorName;
 		this.price = price;
 		this.condition = condition;
-		this.createdAt = createdAt;
 		this.availability = availability;
 		this.classSubject = classSubject;
 	}
@@ -79,14 +76,6 @@ public class CreateListingRequest {
 
 	public void setCondition(String condition) {
 		this.condition = condition;
-	}
-
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
 	}
 
 	public String getAvailability() {

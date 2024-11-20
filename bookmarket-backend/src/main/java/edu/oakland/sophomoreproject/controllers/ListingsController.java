@@ -85,7 +85,8 @@ public class ListingsController {
 		try {
 			session = sessionAuthorizer.authorize(request);
 		} catch (Exception exception) {
-			log.warn("Got createListingRequest from unauthorized user");
+			log.info(exception.getMessage());
+			log.warn("Got createListingRequest from unauthorized user", exception);
 			return ResponseEntity.status(403).build();
 		}
 
@@ -94,7 +95,6 @@ public class ListingsController {
 		String authorName = payload.getAuthorName();
 		float price = payload.getPrice();
 		String condition = payload.getCondition();
-		Instant createdAt = payload.getCreatedAt();
 		String availability = payload.getAvailability();
 		String classSubject = payload.getClassSubject();
 
@@ -106,7 +106,7 @@ public class ListingsController {
 				authorName,
 				price,
 				condition,
-				createdAt,
+				Instant.now(),
 				availability,
 				classSubject,
 				sellerId
@@ -121,7 +121,7 @@ public class ListingsController {
 				authorName,
 				price,
 				condition,
-				createdAt,
+				Instant.now(),
 				availability,
 				classSubject,
 				sellerId

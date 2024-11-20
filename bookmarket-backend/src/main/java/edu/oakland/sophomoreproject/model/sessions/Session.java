@@ -1,9 +1,14 @@
 package edu.oakland.sophomoreproject.model.sessions;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+@ToString
+@EqualsAndHashCode
 public class Session {
 	private final UUID sessionId;
 	private Instant createdAt;

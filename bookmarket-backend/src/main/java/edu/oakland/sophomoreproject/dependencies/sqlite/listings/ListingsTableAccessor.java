@@ -99,7 +99,7 @@ public class ListingsTableAccessor extends TableAccessor {
 	}
 
 	public int createListing(ListingWithoutId listingWithoutId) throws SQLException {
-		String sql = "INSERT INTO listings (title, author, description, class_subject, price, condition, created_at, sale_availability, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING listing_id";
+		String sql = "INSERT INTO listings (title, author, description, class_subject, price, condition, created_at, sale_availability, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement sqlQuery = connection.prepareStatement(sql);
@@ -114,7 +114,9 @@ public class ListingsTableAccessor extends TableAccessor {
 		sqlQuery.setString(8, listingWithoutId.getAvailability());
 		sqlQuery.setInt(9, listingWithoutId.getSellerId());
 
-		ResultSet results = sqlQuery.executeQuery();
-		return results.getInt("listing_id");
+		sqlQuery.executeUpdate();
+
+		ResultSet results = sqlQuery.getGeneratedKeys();
+		return results.getInt(1);
 	}
 }

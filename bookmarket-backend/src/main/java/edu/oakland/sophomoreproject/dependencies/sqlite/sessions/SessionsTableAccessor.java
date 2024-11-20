@@ -2,6 +2,7 @@ package edu.oakland.sophomoreproject.dependencies.sqlite.sessions;
 
 import edu.oakland.sophomoreproject.dependencies.sqlite.TableAccessor;
 import edu.oakland.sophomoreproject.model.sessions.Session;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.sqlite.SQLiteConfig;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeParseException;
 import java.util.UUID;
 
 // this @Component annotation tells spring to create an instance/object of this class in the global object pool
+@Log4j2
 @Component
 public class SessionsTableAccessor extends TableAccessor {
 	// the @Autowired annotation tells spring that this class wants it to automatically pass in the
@@ -38,8 +40,9 @@ public class SessionsTableAccessor extends TableAccessor {
 
 		ResultSet results = sqlQuery.executeQuery();
 
-		// ResultSet.first() returns false if there are no rows
-		if (!results.first()) {
+		// ResultSet.next() returns false if there are no rows
+		if (!results.next()) {
+			log.info("Session with ID {} does not exist in DB", sessionId);
 			return null;
 		}
 
@@ -52,14 +55,15 @@ public class SessionsTableAccessor extends TableAccessor {
 	}
 
 	public void createSession(Session session) throws SQLException {
-		String sql = "INSERT INTO sessions (session_id, expires_at, user_id) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO sessions (session_id, created_at, expires_at, user_id) VALUES (?, ?, ?, ?)";
 
 		Connection connection = getDatabaseConnection();
 		PreparedStatement sqlStatement = connection.prepareStatement(sql);
 		// these replace the three question marks in the actual SQL statement
 		sqlStatement.setString(1, session.getSessionId().toString());
-		sqlStatement.setString(2, session.getExpiresAt().toString());
-		sqlStatement.setInt(3, session.getUserId());
+		sqlStatement.setString(2, Instant.now().toString());
+		sqlStatement.setString(3, session.getExpiresAt().toString());
+		sqlStatement.setInt(4, session.getUserId());
 
 		sqlStatement.execute();
 	}

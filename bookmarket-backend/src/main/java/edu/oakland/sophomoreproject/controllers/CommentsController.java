@@ -6,6 +6,8 @@ import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.dependencies.sqlite.comments.CommentsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
+import edu.oakland.sophomoreproject.model.comments.Comment;
+import edu.oakland.sophomoreproject.model.comments.CommentWithoutId;
 import edu.oakland.sophomoreproject.model.sessions.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
+import java.time.Instant;
+import java.util.List;
 
 @RestController
 public class CommentsController {
@@ -45,6 +49,7 @@ public class CommentsController {
             @PathVariable("listingId") Integer listingId
     ) throws SQLException {
         List<Comment> comments = commentsTableAccessor.getAllCommentsForListing(listingId);
+
         GetAllCommentsForListingResponse response = new GetAllCommentsForListingResponse(comments);
         return ResponseEntity.ok().body(response);
     }
@@ -52,6 +57,7 @@ public class CommentsController {
     @PostMapping("/api/listings/{listingId}/comments")
     public ResponseEntity<Void> createComment(
             HttpServletRequest request,
+            @PathVariable("listingId") Integer listingId,
             @RequestBody CreateCommentRequest payload
     ) throws SQLException {
         Session session;
@@ -63,7 +69,7 @@ public class CommentsController {
 
         CommentWithoutId newComment = new CommentWithoutId(
                 payload.getContent(),
-                payload.getCreatedAt() != null ? payload.getCreatedAt() : Instant.now(),
+                Instant.now(),
                 session.getUserId(),
                 listingId,
                 null
@@ -90,13 +96,14 @@ public class CommentsController {
 
         CommentWithoutId replyComment = new CommentWithoutId(
                 payload.getContent(),
-                payload.getCreatedAt() != null ? payload.getCreatedAt() : Instant.now(),
+                Instant.now(),
                 session.getUserId(),
                 listingId,
                 parentCommentId
         );
 
         commentsTableAccessor.createComment(replyComment);
+
         HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
         return ResponseEntity.ok().headers(headers).build();
     }

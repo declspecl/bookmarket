@@ -4,6 +4,7 @@ import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.SessionsTableAccessor;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 // this @Component annotation tells spring to create an instance/object of this class in the global object pool
+@Log4j2
 @Component
 public class SessionAuthorizer {
 	private final CookieExtractor cookieExtractor;
@@ -36,15 +38,18 @@ public class SessionAuthorizer {
 			sessionCookie = cookieExtractor.extractSessionCookie(request);
 		}
 		catch (Exception e) {
+			log.info("Cookie with the name `session` does not exist");
 			throw new UnauthorizedException("Session cookie was not present in HTTP request");
 		}
 		if (sessionCookie == null) {
+			log.info("Cookie with the name `session` does not exist");
 			throw new UnauthorizedException("Session cookie was not present in HTTP request");
 		}
 
 		// check for if the session exists in the database
-		String sessionId = sessionCookie.getValue();
-		Session dbSession = sessionsTableAccessor.getSessionById(UUID.fromString(sessionId));
+		UUID sessionId = UUID.fromString(sessionCookie.getValue());
+		System.out.println(sessionId);
+		Session dbSession = sessionsTableAccessor.getSessionById(sessionId);
 		if (dbSession == null) {
 			throw new UnauthorizedException("Session does not exist in the database");
 		}
