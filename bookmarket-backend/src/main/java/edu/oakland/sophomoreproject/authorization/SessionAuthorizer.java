@@ -47,8 +47,13 @@ public class SessionAuthorizer {
 		}
 
 		// check for if the session exists in the database
-		UUID sessionId = UUID.fromString(sessionCookie.getValue());
-		System.out.println(sessionId);
+		UUID sessionId;
+		try {
+			sessionId = UUID.fromString(sessionCookie.getValue());
+		}
+		catch (Exception e) {
+			return null;
+		}
 		Session dbSession = sessionsTableAccessor.getSessionById(sessionId);
 		if (dbSession == null) {
 			throw new UnauthorizedException("Session does not exist in the database");

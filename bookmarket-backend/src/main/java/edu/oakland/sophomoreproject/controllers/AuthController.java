@@ -91,7 +91,7 @@ public class AuthController {
 		}
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Set-Cookie", "session='';Expires=0");
+		headers.add("Set-Cookie", "session=;Max-Age=0;Path=/");
 		return ResponseEntity.ok().headers(headers).build();
 	}
 }
