@@ -1,0 +1,64 @@
+.create-listing-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 3rem;
+    color: #caa381;
+    font-weight: 800;
+    margin-bottom: 40px;
+}
+
+.title {
+    font-weight: 550;
+}
+
+.book {
+    padding: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.author {
+    padding: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.price {
+    padding: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.condition {
+    margin-bottom: 40px;
+}
+
+.subject {
+    margin-bottom: 40px;
+}
+
+.submit-button {
+    text-align: center;
+    background-color: #e5dfb7;
+    font-weight: 600;
+    border: 1px solid #caa381;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.submit-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
