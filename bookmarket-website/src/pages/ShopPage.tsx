@@ -121,10 +121,10 @@ export function ShopPage() {
             <NavBar />
 
             <div className="p-8">
-                <div className="flex flex-row items-center justify-between gap-8">
-                    <Input placeholder="Search for a listing..." className="w-0 grow" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+                    <Input placeholder="Search for a listing..." className="w-full grow" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
 
-                    <div className="flex flex-row gap-4">
+                    <div className="flex flex-col gap-4 sm:flex-row">
                         <FilterTypeDropdown filterType={filterType} setFilterType={setFilterType} />
                         <FilterDirectionDropdown filterDirection={filterDirection} setFilterDirection={setFilterDirection} />
                     </div>
