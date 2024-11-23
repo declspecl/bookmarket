@@ -7,13 +7,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.sqlite.SQLiteConfig;
-import org.sqlite.SQLiteException;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.Instant;
 
 import java.sql.*;
 import java.time.Instant;
@@ -52,8 +45,6 @@ public class UsersTableAccessor extends TableAccessor {
 		String sql = "SELECT * FROM users WHERE user_id = ? LIMIT 1";
 
 		Connection connection = getDatabaseConnection();
-		String sql = "SELECT id, first_name, last_name, email, password, created_at FROM users WHERE userId = ? LIMIT 1";
-
 		PreparedStatement sqlQuery = connection.prepareStatement(sql);
 		sqlQuery.setInt(1, userId);
 
@@ -69,8 +60,6 @@ public class UsersTableAccessor extends TableAccessor {
 			return new User(userId, firstName, lastName, email, password, createdAt);
 		}
 
-			return new User(userId, firstName, lastName, email, password, createdAt);
-		}
 		return null;
 	}
 
