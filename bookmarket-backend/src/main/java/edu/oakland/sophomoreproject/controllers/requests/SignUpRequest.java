@@ -48,15 +48,4 @@ public class SignUpRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	public Instant getCreatedAt() { return createdAt; }
-
-	public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
-
->>>>>>> 789f5d1 (Add login, signup, logout api; both the authController and usersTableAccessor)
-=======
->>>>>>> e743cbf (fix AuthController, UsersTableAccessor and SignUpRequest)
 }
