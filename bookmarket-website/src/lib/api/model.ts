@@ -22,6 +22,13 @@ export enum ClassSubject {
     PHY = "PHY"
 }
 
+export interface User {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+}
+
 export interface Listing {
     id: number;
     title: string;
@@ -35,11 +42,33 @@ export interface Listing {
     createdAt: string;
 }
 
+export interface ListingWithSeller {
+    id: number;
+    title: string;
+    description: string;
+    authorName: string;
+    price: number;
+    condition: Condition;
+    availability: Availability;
+    classSubject: ClassSubject;
+    seller: User;
+    createdAt: string;
+}
+
 export interface Comment {
     id: string;
     content: string;
     createdAt: string;
     creatorId: number;
     parentListingId: number;
-    parentCommentId: number;
+    parentCommentId: number | undefined;
+}
+
+export interface CommentWithCreator {
+    id: string;
+    content: string;
+    createdAt: string;
+    creator: User;
+    parentListingId: number;
+    parentCommentId: number | undefined;
 }
