@@ -1,21 +1,21 @@
 package edu.oakland.sophomoreproject.controllers.responses;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import edu.oakland.sophomoreproject.model.listings.Listing;
+import edu.oakland.sophomoreproject.controllers.model.ListingDisplayDetails;
 
 @JsonSerialize
 public class GetListingByIdResponse {
-    private Listing listing;
+    private ListingDisplayDetails listing;
 
-    public GetListingByIdResponse(Listing listing) {
+    public GetListingByIdResponse(ListingDisplayDetails listing) {
         this.listing = listing;
     }
 
-    public Listing getListing() {
+    public ListingDisplayDetails getListing() {
         return listing;
     }
 
-    public void setListing(Listing listing) {
+    public void setListing(ListingDisplayDetails listing) {
         this.listing = listing;
     }
 }

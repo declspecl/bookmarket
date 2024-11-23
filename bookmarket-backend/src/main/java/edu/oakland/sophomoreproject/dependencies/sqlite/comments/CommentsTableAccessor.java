@@ -1,7 +1,10 @@
 package edu.oakland.sophomoreproject.dependencies.sqlite.comments;
 
 import edu.oakland.sophomoreproject.dependencies.sqlite.TableAccessor;
+import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
+import edu.oakland.sophomoreproject.model.auth.User;
 import edu.oakland.sophomoreproject.model.comments.Comment;
+import edu.oakland.sophomoreproject.model.comments.CommentWithCreator;
 import edu.oakland.sophomoreproject.model.comments.CommentWithoutId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,13 +17,17 @@ import java.util.List;
 
 @Component
 public class CommentsTableAccessor extends TableAccessor {
+    private final UsersTableAccessor usersTableAccessor;
+
     @Autowired
-    public CommentsTableAccessor(SQLiteConfig sqliteConfig) {
+    public CommentsTableAccessor(SQLiteConfig sqliteConfig, UsersTableAccessor usersTableAccessor) {
         super(sqliteConfig);
+
+        this.usersTableAccessor = usersTableAccessor;
     }
 
-    public List<Comment> getAllCommentsForListing(int listingId) throws SQLException {
-        List<Comment> comments = new ArrayList<>();
+    public List<CommentWithCreator> getAllCommentsForListing(int listingId) throws SQLException {
+        List<CommentWithCreator> comments = new ArrayList<>();
         String sql = "SELECT * FROM comments WHERE listing_id = ? ORDER BY created_at";
 
         Connection connection = getDatabaseConnection();
@@ -37,11 +44,14 @@ public class CommentsTableAccessor extends TableAccessor {
             int parentListingId = results.getInt("listing_id");
             Integer parentCommentId = results.getInt("parent_comment_id");
 
-            Comment comment = new Comment(
+            // if you see this, it's already too late 🙏
+            User creator = usersTableAccessor.getUserById(creatorId);
+
+            CommentWithCreator comment = new CommentWithCreator(
                     commentId,
                     content,
                     createdAt,
-                    creatorId,
+                    creator,
                     parentListingId,
                     parentCommentId == 0 ? null : parentCommentId
             );

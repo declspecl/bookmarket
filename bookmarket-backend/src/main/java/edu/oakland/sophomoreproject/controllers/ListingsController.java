@@ -1,5 +1,6 @@
 package edu.oakland.sophomoreproject.controllers;
 
+import edu.oakland.sophomoreproject.controllers.model.ListingDisplayDetails;
 import edu.oakland.sophomoreproject.controllers.requests.CreateListingRequest;
 import edu.oakland.sophomoreproject.controllers.requests.UpdateListingRequest;
 import edu.oakland.sophomoreproject.controllers.responses.CreateListingResponse;
@@ -9,6 +10,7 @@ import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.dependencies.sqlite.listings.ListingsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
+import edu.oakland.sophomoreproject.model.listings.ListingWithSeller;
 import edu.oakland.sophomoreproject.model.listings.ListingWithoutId;
 import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.model.listings.Listing;
@@ -58,9 +60,9 @@ public class ListingsController {
 	) throws SQLException {
 		log.info("Got getListingById request for listing with ID {}", listingId);
 
-		Listing listing = listingsTableAccessor.getListingById(listingId);
+		ListingWithSeller listing = listingsTableAccessor.getListingById(listingId);
 
-		GetListingByIdResponse response = new GetListingByIdResponse(listing);
+		GetListingByIdResponse response = new GetListingByIdResponse(ListingDisplayDetails.fromListingWithSeller(listing));
 		return ResponseEntity.ok().body(response);
 	}
 
@@ -68,9 +70,13 @@ public class ListingsController {
 	public ResponseEntity<GetAllListingsResponse> getAllListings(HttpServletRequest request) throws SQLException {
 		log.info("Got getAllListings request");
 
-		List<Listing> listings = listingsTableAccessor.getAllListings();
+		List<ListingWithSeller> listings = listingsTableAccessor.getAllListings();
 
-		GetAllListingsResponse response = new GetAllListingsResponse(listings);
+		GetAllListingsResponse response = new GetAllListingsResponse(
+				listings.stream()
+						.map(ListingDisplayDetails::fromListingWithSeller)
+						.toList()
+		);
 		return ResponseEntity.ok().body(response);
 	}
 

@@ -1,7 +1,9 @@
 package edu.oakland.sophomoreproject.dependencies.sqlite.listings;
 
 import edu.oakland.sophomoreproject.dependencies.sqlite.TableAccessor;
-import edu.oakland.sophomoreproject.model.listings.Listing;
+import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
+import edu.oakland.sophomoreproject.model.auth.User;
+import edu.oakland.sophomoreproject.model.listings.ListingWithSeller;
 import edu.oakland.sophomoreproject.model.listings.ListingWithoutId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,12 +16,16 @@ import java.util.List;
 
 @Component
 public class ListingsTableAccessor extends TableAccessor {
+	private final UsersTableAccessor usersTableAccessor;
+
 	@Autowired
-	public ListingsTableAccessor(SQLiteConfig sqliteConfig) {
+	public ListingsTableAccessor(SQLiteConfig sqliteConfig, UsersTableAccessor usersTableAccessor) {
 		super(sqliteConfig);
+
+		this.usersTableAccessor = usersTableAccessor;
 	}
 
-	public List<Listing> getAllListings() throws SQLException {
+	public List<ListingWithSeller> getAllListings() throws SQLException {
 		String sql = "SELECT * FROM listings ORDER BY created_at DESC";
 
 		Connection connection = getDatabaseConnection();
@@ -27,7 +33,7 @@ public class ListingsTableAccessor extends TableAccessor {
 
 		ResultSet results = sqlQuery.executeQuery();
 
-		List<Listing> listings = new ArrayList<>();
+		List<ListingWithSeller> listings = new ArrayList<>();
 
 		while (results.next()) {
 			int listingId = results.getInt("listing_id");
@@ -41,7 +47,10 @@ public class ListingsTableAccessor extends TableAccessor {
 			String saleAvailability = results.getString("sale_availability");
 			Instant createdAt = Instant.parse(results.getString("created_at"));
 
-			Listing listing = new Listing(
+			// if you see this, it's already too late 🙏
+			User seller = usersTableAccessor.getUserById(sellerId);
+
+			ListingWithSeller listing = new ListingWithSeller(
 					listingId,
 					title,
 					description,
@@ -51,7 +60,7 @@ public class ListingsTableAccessor extends TableAccessor {
 					createdAt,
 					saleAvailability,
 					classSubject,
-					sellerId
+					seller
 			);
 
 			listings.add(listing);
@@ -60,7 +69,7 @@ public class ListingsTableAccessor extends TableAccessor {
 		return listings;
 	}
 
-	public Listing getListingById(int listingId) throws SQLException {
+	public ListingWithSeller getListingById(int listingId) throws SQLException {
 		String sql = "SELECT * FROM listings WHERE listing_id = ? LIMIT 1";
 
 		Connection connection = getDatabaseConnection();
@@ -81,7 +90,10 @@ public class ListingsTableAccessor extends TableAccessor {
 			String saleAvailability = results.getString("sale_availability");
 			Instant createdAt = Instant.parse(results.getString("created_at"));
 
-			return new Listing(
+			// if you see this, it's already too late 🙏
+			User seller = usersTableAccessor.getUserById(sellerId);
+
+			return new ListingWithSeller(
 					listingId,
 					title,
 					description,
@@ -91,7 +103,7 @@ public class ListingsTableAccessor extends TableAccessor {
 					createdAt,
 					saleAvailability,
 					classSubject,
-					sellerId
+					seller
 			);
 		}
 

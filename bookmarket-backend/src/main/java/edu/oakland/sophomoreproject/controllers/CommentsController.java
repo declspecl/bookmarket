@@ -1,12 +1,13 @@
 package edu.oakland.sophomoreproject.controllers;
 
+import edu.oakland.sophomoreproject.controllers.model.CommentDisplayDetails;
 import edu.oakland.sophomoreproject.controllers.requests.CreateCommentRequest;
 import edu.oakland.sophomoreproject.controllers.responses.GetAllCommentsForListingResponse;
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
 import edu.oakland.sophomoreproject.dependencies.sqlite.comments.CommentsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
-import edu.oakland.sophomoreproject.model.comments.Comment;
+import edu.oakland.sophomoreproject.model.comments.CommentWithCreator;
 import edu.oakland.sophomoreproject.model.comments.CommentWithoutId;
 import edu.oakland.sophomoreproject.model.sessions.Session;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,9 +49,13 @@ public class CommentsController {
             HttpServletRequest request,
             @PathVariable("listingId") Integer listingId
     ) throws SQLException {
-        List<Comment> comments = commentsTableAccessor.getAllCommentsForListing(listingId);
+        List<CommentWithCreator> comments = commentsTableAccessor.getAllCommentsForListing(listingId);
 
-        GetAllCommentsForListingResponse response = new GetAllCommentsForListingResponse(comments);
+        GetAllCommentsForListingResponse response = new GetAllCommentsForListingResponse(
+                comments.stream()
+                        .map(CommentDisplayDetails::fromCommentWithCreator)
+                        .toList()
+        );
         return ResponseEntity.ok().body(response);
     }
 
