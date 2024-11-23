@@ -18,7 +18,7 @@ export enum ClassSubject {
     HC = "HC",
     CSI = "CSI",
     BIO = "BIO",
-    CHMM = "CHM",
+    CHM = "CHM",
     PHY = "PHY"
 }
 
