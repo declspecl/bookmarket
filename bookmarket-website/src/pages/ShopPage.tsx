@@ -1,5 +1,4 @@
 import { NavBar } from "@/components/NavBar";
-import "./ShopPage.css";
 import { mockGetAllListingsResponse } from "@/lib/api/mocks";
 import { Listing } from "@/lib/api/model";
 import { Card, CardContent } from "@/components/ui/card";
