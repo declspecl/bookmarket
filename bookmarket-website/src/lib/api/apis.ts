@@ -99,25 +99,42 @@ export async function getAllComments(request: GetAllCommentsRequest): Promise<Ge
 // =============
 
 interface SignupRequest {
-    // TODO
+    email : string;
+    firstName : string;
+    lastName : string;
+    password : string;
 }
 
 export async function signup(request: SignupRequest): Promise<void> {
-    // TODO
+    const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({request}),
+    });
 }
 
 interface LoginRequest {
-    // TODO
+    email : string;
+    password : string;
 }
 
 export async function login(request: LoginRequest): Promise<void> {
-    // TODO
+    const response = await fetch("/api/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({request}),
+    });
 }
 
-interface LogoutRequest {
-    // TODO
-}
-
-export async function logout(request: LogoutRequest): Promise<void> {
-    // TODO
+export async function logout(): Promise<void> {
+    const response = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+    });
 }
