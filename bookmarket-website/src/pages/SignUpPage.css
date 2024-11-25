@@ -1,0 +1,39 @@
+.signup-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #caa381;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.title {
+    font-weight: 600;
+}
+
+.input-field {
+    margin-bottom: 20px;
+}
+
+.submit-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #EAF3DD;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
