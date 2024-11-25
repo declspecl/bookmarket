@@ -4,6 +4,7 @@ import { NavBar } from "@/components/NavBar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export function LoginPage() {
     const [inputtedEmail, setInputtedEmail] = useState("");
@@ -49,6 +50,10 @@ export function LoginPage() {
                     <Button>Login</Button>
                 </div>
             </div>
+                 {/*Sign-up Prompt*/}
+            <p className="signup-prompt">
+                Don't have an account? <Link to="/signup">Click here</Link> to sign up
+            </p>
         </div>
     );
 }

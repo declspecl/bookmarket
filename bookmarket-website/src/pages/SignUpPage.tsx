@@ -18,7 +18,7 @@ export function SignUpPage() {
             <h1 className="page-title">Sign Up</h1>
 
             <div className="flex flex-col gap-6">
-                {/* Full Name */}
+                {/*Full Name*/}
                 <div>
                     <h2 className="title">Full Name</h2>
                     <Input
@@ -32,7 +32,7 @@ export function SignUpPage() {
                     />
                 </div>
 
-                {/* Email Address */}
+                {/*Email Address*/}
                 <div>
                     <h2 className="title">Email Address</h2>
                     <Input
@@ -46,7 +46,7 @@ export function SignUpPage() {
                     />
                 </div>
 
-                {/* Password */}
+                {/*Password*/}
                 <div>
                     <h2 className="title">Password</h2>
                     <Input
@@ -60,7 +60,7 @@ export function SignUpPage() {
                     />
                 </div>
 
-                {/* Confirm Password */}
+                {/*Confirm Password*/}
                 <div>
                     <h2 className="title">Confirm Password</h2>
                     <Input
@@ -74,7 +74,7 @@ export function SignUpPage() {
                     />
                 </div>
 
-                {/* Submit Button */}
+                {/*Submit Button*/}
                 <div className="submit-box">
                     <Button>Sign Up</Button>
                 </div>
