@@ -9,11 +9,11 @@ interface FilterTypeDropdownProps {
 export function FilterTypeDropdown({ filterType, setFilterType }: FilterTypeDropdownProps) {
     return (
         <Select value={filterType || FilterType.LIST_DATE} onValueChange={setFilterType}>
-            <SelectTrigger>{filterType || "Select a filter..."}</SelectTrigger>
+            <SelectTrigger className="min-w-[26ex]">{filterType || "Select a filter..."}</SelectTrigger>
 
             <SelectContent>
                 {Object.values(FilterType).map((filterTypeOption) => (
-                    <SelectItem value={filterTypeOption}>{filterTypeOption}</SelectItem>
+                    <SelectItem key={`type-option-${filterTypeOption}`} value={filterTypeOption}>{filterTypeOption}</SelectItem>
                 ))}
             </SelectContent>
         </Select>
@@ -28,11 +28,11 @@ interface FilterDirectionDropdownProps {
 export function FilterDirectionDropdown({ filterDirection, setFilterDirection }: FilterDirectionDropdownProps) {
     return (
         <Select value={filterDirection || FilterDirection.DESC} onValueChange={setFilterDirection}>
-            <SelectTrigger>{filterDirection || "Select a direction..."}</SelectTrigger>
+            <SelectTrigger className="min-w-[30ex]">{filterDirection || "Select a direction..."}</SelectTrigger>
 
             <SelectContent>
                 {Object.values(FilterDirection).map((filterDirectionOption) => (
-                    <SelectItem value={filterDirectionOption}>{filterDirectionOption}</SelectItem>
+                    <SelectItem key={`direction-option-${filterDirectionOption}`} value={filterDirectionOption}>{filterDirectionOption}</SelectItem>
                 ))}
             </SelectContent>
         </Select>

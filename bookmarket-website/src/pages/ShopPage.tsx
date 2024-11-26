@@ -17,7 +17,7 @@ function ListingCard({ listing }: { listing: Listing }) {
         <Card>
             <div className="bg-gray-400 w-full min-h-40 rounded-tr-lg rounded-tl-lg" />
 
-            <CardContent className="flex flex-row items-center justify-between py-4 px-6">
+            <CardContent className="flex flex-col gap-4 xs:gap-2 xs:flex-row items-center xs:items-end justify-between py-4 px-6">
                 <div className="flex flex-col gap-2">
                     <p className="text-xl font-medium">{listing.title} ({listing.classSubject})</p>
 
@@ -29,8 +29,8 @@ function ListingCard({ listing }: { listing: Listing }) {
                     </p>
                 </div>
 
-                <Button variant="default" asChild>
-                    <Link to={`/listing/${listing.id}`}>View Details</Link>
+                <Button variant="default" size="lg" asChild>
+                    <Link to={`/listing/${listing.id}`} className="text-lg font-medium">View Details</Link>
                 </Button>
             </CardContent>
         </Card>
@@ -121,6 +121,8 @@ export function ShopPage() {
             <NavBar />
 
             <div className="p-8">
+                <h1 className="text-secondary font-bold text-6xl mb-4">Shop</h1>
+
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
                     <Input placeholder="Search for a listing..." className="w-full grow" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
 
@@ -134,7 +136,7 @@ export function ShopPage() {
 
                 <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-8">
                     {searchOrderedListings.map((listing) => (
-                        <ListingCard key={listing.id} listing={listing} />
+                        <ListingCard key={`listing-${listing.id}`} listing={listing} />
                     ))}
                 </div>
             </div>

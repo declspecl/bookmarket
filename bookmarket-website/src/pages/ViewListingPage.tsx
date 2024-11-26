@@ -36,6 +36,8 @@ function CommentCard({ comment, commentById }: CommentCardProps) {
 export function ViewListingPage() {
     const params = useParams();
 
+    console.log(params["id"]);
+
     const listing = mockGetListingByIdResponse;
     const [comments, setComments] = useState(mockGetAllCommentsForListingResponse);
 
@@ -46,8 +48,6 @@ export function ViewListingPage() {
     return (
         <div>
             <NavBar />
-
-            <h1>View Listing for ID {params["id"]}</h1>
 
             <div className="px-4 md:px-0 md:w-3/4 lg:w-3/5 mx-auto flex flex-col gap-8">
                 <div>

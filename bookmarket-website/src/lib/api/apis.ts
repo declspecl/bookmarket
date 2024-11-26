@@ -105,7 +105,7 @@ interface SignupRequest {
     password : string;
 }
 
-export async function signup(request: SignupRequest): Promise<void> {
+export async function signup(request: SignupRequest): Promise<Response> {
     const response = await fetch("/api/auth/signup", {
         method: "POST",
         credentials: "include",
@@ -114,6 +114,8 @@ export async function signup(request: SignupRequest): Promise<void> {
         },
         body: JSON.stringify({request}),
     });
+
+    return response;
 }
 
 interface LoginRequest {
@@ -121,7 +123,7 @@ interface LoginRequest {
     password : string;
 }
 
-export async function login(request: LoginRequest): Promise<void> {
+export async function login(request: LoginRequest): Promise<Response> {
     const response = await fetch("/api/auth/login", {
         method: "POST",
         credentials: "include",
@@ -130,11 +132,15 @@ export async function login(request: LoginRequest): Promise<void> {
         },
         body: JSON.stringify({request}),
     });
+
+    return response;
 }
 
-export async function logout(): Promise<void> {
+export async function logout(): Promise<Response> {
     const response = await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
     });
+
+    return response;
 }

@@ -21,6 +21,7 @@ export function NavBar() {
                         await fetch("/api/auth/logout", {
                             method: "POST"
                         });
+                        document.cookie = "session=;Max-Age=0";
 
                         navigate("/");
                     }}
