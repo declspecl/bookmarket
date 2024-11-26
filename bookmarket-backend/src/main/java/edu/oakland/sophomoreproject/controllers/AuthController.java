@@ -10,9 +10,11 @@ import edu.oakland.sophomoreproject.model.sessions.Session;
 import edu.oakland.sophomoreproject.dependencies.sqlite.sessions.SessionsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,8 +45,14 @@ public class AuthController {
 	@PostMapping("/api/auth/login")
 	public ResponseEntity<Void> login(
 			HttpServletRequest request,
-			@RequestBody LoginRequest payload
+			@Validated @RequestBody @NonNull LoginRequest payload
 	) throws SQLException {
+		if (payload.getEmail() == null || payload.getEmail().isBlank()
+			|| payload.getPassword() == null || payload.getPassword().isBlank()
+		) {
+			return ResponseEntity.status(400).build();
+		}
+
 		log.info("Got login request with payload {}", payload);
 
 		User user = usersTableAccessor.getUserByEmailAndPassword(payload.getEmail(), payload.getPassword());
@@ -62,8 +70,17 @@ public class AuthController {
 	@PostMapping("/api/auth/signup")
 	public ResponseEntity<Void> signup(
 			HttpServletRequest request,
-			@RequestBody SignUpRequest payload
+			@Validated @NonNull @RequestBody SignUpRequest payload
 	) throws SQLException {
+		if (
+				payload.getFirstName() == null || payload.getFirstName().isBlank()
+				|| payload.getLastName() == null || payload.getLastName().isBlank()
+				|| payload.getEmail() == null || payload.getEmail().isBlank()
+				|| payload.getPassword() == null || payload.getPassword().isBlank()
+		) {
+			return ResponseEntity.status(400).build();
+		}
+
 		log.info("Got signup request with payload {}", payload);
 
 		UserWithoutId userWithoutId = new UserWithoutId(

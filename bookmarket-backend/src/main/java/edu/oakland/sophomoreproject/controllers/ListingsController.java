@@ -85,6 +85,17 @@ public class ListingsController {
 			HttpServletRequest request,
 			@RequestBody CreateListingRequest payload
 	) throws SQLException {
+		if (payload.getTitle() == null || payload.getTitle().trim().isEmpty()
+				|| payload.getDescription() == null || payload.getDescription().trim().isEmpty()
+				|| payload.getAuthorName() == null || payload.getAuthorName().trim().isEmpty()
+				|| payload.getPrice() <= 0
+				|| payload.getCondition() == null || payload.getCondition().trim().isEmpty()
+				|| payload.getAvailability() == null || payload.getAvailability().trim().isEmpty()
+				|| payload.getClassSubject() == null || payload.getClassSubject().trim().isEmpty()
+		) {
+			return ResponseEntity.status(400).build();
+		}
+
 		log.info("Got createListing request with payload {}", payload);
 
 		Session session;

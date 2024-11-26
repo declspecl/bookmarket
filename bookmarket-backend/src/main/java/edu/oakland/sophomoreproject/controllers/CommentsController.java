@@ -65,6 +65,10 @@ public class CommentsController {
             @PathVariable("listingId") Integer listingId,
             @RequestBody CreateCommentRequest payload
     ) throws SQLException {
+        if (payload.getContent() == null || payload.getContent().isBlank()) {
+            return ResponseEntity.status(400).build();
+        }
+
         Session session;
         try {
             session = sessionAuthorizer.authorize(request);
@@ -92,6 +96,10 @@ public class CommentsController {
             @PathVariable("parentCommentId") Integer parentCommentId,
             @RequestBody CreateCommentRequest payload
     ) throws SQLException {
+        if (payload.getContent() == null || payload.getContent().isBlank()) {
+            return ResponseEntity.status(400).build();
+        }
+
         Session session;
         try {
             session = sessionAuthorizer.authorize(request);
