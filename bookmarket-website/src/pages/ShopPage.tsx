@@ -1,6 +1,5 @@
 import { NavBar } from "@/components/NavBar";
-import { mockGetAllListingsResponse } from "@/lib/api/mocks";
-import { Listing } from "@/lib/api/model";
+import { ListingWithSeller } from "@/lib/api/model";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,29 +8,33 @@ import { FilterDirection, FilterType } from "@/lib/shop/model";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getAllListings } from "@/lib/api/apis";
+import { LucideLoader2 } from "lucide-react";
 
-function ListingCard({ listing }: { listing: Listing }) {
+function ListingCard({ listing }: { listing: ListingWithSeller }) {
     const listingDate = new Date(listing.createdAt);
 
     return (
-        <Card>
+        <Card className="flex flex-col">
             <div className="bg-gray-400 w-full min-h-40 rounded-tr-lg rounded-tl-lg" />
 
-            <CardContent className="flex flex-col gap-4 xs:gap-2 xs:flex-row items-center xs:items-end justify-between py-4 px-6">
+            <CardContent className="grow flex flex-col gap-2 justify-between py-4 px-6">
                 <div className="flex flex-col gap-2">
-                    <p className="text-xl font-medium">{listing.title} ({listing.classSubject})</p>
-
+                    <p className="text-xl font-medium text-wrap">{listing.title} ({listing.classSubject})</p>
                     <p className="text-sm text-muted-foreground">Listed {listingDate.toLocaleString()}</p>
+                </div>
 
+                <div className="flex flex-col justify-between gap-2 sm:w-full sm:flex-row sm:items-center-center">
                     <p className="flex flex-row items-center gap-2">
                         <span className="text-lg font-bold">${listing.price}</span>
                         <span className="text-sm text-muted-foreground">Condition: {listing.condition}</span>
                     </p>
-                </div>
 
-                <Button variant="default" size="lg" asChild>
-                    <Link to={`/listing/${listing.id}`} className="text-lg font-medium">View Details</Link>
-                </Button>
+                    <Button variant="default" size="lg" asChild>
+                        <Link to={`/listing/${listing.id}`} className="text-lg font-medium">View Details</Link>
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     );
@@ -42,9 +45,18 @@ export function ShopPage() {
     const [filterType, setFilterType] = useState<FilterType | null>(null);
     const [filterDirection, setFilterDirection] = useState<FilterDirection | null>(null);
 
-    const listings = mockGetAllListingsResponse;
+    const { isLoading, error,  data } = useQuery({
+        queryKey: ["GetAllListings"],
+        queryFn: getAllListings
+    });
+
+    const listings = data?.listings;
 
     const filteredListings = useMemo(() => {
+        if (!listings) {
+            return [];
+        }
+
         if (filterType === null || filterDirection === null) {
             return listings;
         }
@@ -134,11 +146,23 @@ export function ShopPage() {
 
                 <div className="my-6" />
 
-                <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-8">
-                    {searchOrderedListings.map((listing) => (
-                        <ListingCard key={`listing-${listing.id}`} listing={listing} />
-                    ))}
-                </div>
+                {isLoading ? (
+                    <LucideLoader2 className="animate-spin w-12 h-12" />
+                ) : error ? (
+                    <p>We encountered a fatal error when trying to read the listings. Please try again later.</p>
+                ) : (
+                    <>
+                        {searchOrderedListings.length === 0 ? (
+                            <p>There are currently no listings! Want to <Link to="/create-listing" className="underline">create one</Link>?</p>
+                        ) : (
+                            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-8 xl:grid-cols-3 ">
+                                {searchOrderedListings.map((listing) => (
+                                    <ListingCard key={`listing-${listing.id}`} listing={listing} />
+                                ))}
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
         </div>
     );

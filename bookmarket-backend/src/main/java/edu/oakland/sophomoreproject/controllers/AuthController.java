@@ -102,9 +102,12 @@ public class AuthController {
 
 	@PostMapping("/api/auth/logout")
 	public ResponseEntity<Void> logout(HttpServletRequest request) throws SQLException {
-		Session session = sessionAuthorizer.authorize(request);
-		if (session != null) {
+		try {
+			Session session = sessionAuthorizer.authorize(request);
 			sessionsTableAccessor.deleteSessionById(session.getSessionId());
+		}
+		catch (Exception e){
+			log.warn("Got logout request for nonexistent session");
 		}
 
 		HttpHeaders headers = new HttpHeaders();

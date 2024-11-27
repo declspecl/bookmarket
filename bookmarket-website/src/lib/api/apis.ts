@@ -1,4 +1,4 @@
-import { Listing } from "./model";
+import { Comment, CommentWithCreator, Listing, ListingWithSeller } from "./model";
 
 // ================
 // = LISTING APIS =
@@ -33,7 +33,7 @@ export async function createListing(request: CreateListingRequest): Promise<Crea
 }
 
 interface GetAllListingsResponse {
-    listings: Listing[];
+    listings: ListingWithSeller[];
 }
 
 export async function getAllListings(): Promise<GetAllListingsResponse> {
@@ -51,7 +51,7 @@ interface GetListingRequest {
 }
 
 interface GetListingResponse {
-    listing: Listing;
+    listing: ListingWithSeller;
 }
 
 export async function getListing(request: GetListingRequest): Promise<GetListingResponse> {
@@ -103,7 +103,7 @@ interface GetAllCommentsRequest {
 }
 
 interface GetAllCommentsResponse {
-    comments: Comment[];
+    comments: CommentWithCreator[];
 }
 
 export async function getAllComments(request: GetAllCommentsRequest): Promise<GetAllCommentsResponse> {

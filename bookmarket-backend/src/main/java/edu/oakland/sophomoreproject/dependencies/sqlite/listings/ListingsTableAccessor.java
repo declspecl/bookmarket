@@ -80,13 +80,13 @@ public class ListingsTableAccessor extends TableAccessor {
 		ResultSet results = statement.executeQuery();
 
 		if (results.next()) {
-			String author = results.getString("author");
 			String title = results.getString("title");
-			float price = results.getFloat("price");
+			String author = results.getString("author");
 			String description = results.getString("description");
-			int sellerId = results.getInt("seller_id");
 			String classSubject = results.getString("class_subject");
 			String condition = results.getString("condition");
+			int sellerId = results.getInt("seller_id");
+			float price = results.getFloat("price");
 			String saleAvailability = results.getString("sale_availability");
 			Instant createdAt = Instant.parse(results.getString("created_at"));
 
@@ -118,8 +118,8 @@ public class ListingsTableAccessor extends TableAccessor {
 
 		sqlQuery.setString(1, listingWithoutId.getTitle());
 		sqlQuery.setString(2, listingWithoutId.getAuthorName());
-		sqlQuery.setString(3, listingWithoutId.getClassSubject());
-		sqlQuery.setString(4, listingWithoutId.getDescription());
+		sqlQuery.setString(3, listingWithoutId.getDescription());
+		sqlQuery.setString(4, listingWithoutId.getClassSubject());
 		sqlQuery.setFloat(5, listingWithoutId.getPrice());
 		sqlQuery.setString(6, listingWithoutId.getCondition());
 		sqlQuery.setString(7, Instant.now().toString());

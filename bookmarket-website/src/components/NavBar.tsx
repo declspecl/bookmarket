@@ -17,7 +17,7 @@ export function NavBar() {
                 <h1 className="navbar-title">O.U. Bookmarket</h1>
             <div>
                 <Link to="/">Shop</Link>
-                <Link to="/create-listing">Create Listing</Link>
+                {isLoggedIn && <Link to="/create-listing">Create Listing</Link>}
 
                 {!isLoggedIn ? (
                     <Link to="/login">Login</Link>

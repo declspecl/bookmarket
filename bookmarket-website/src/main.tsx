@@ -7,6 +7,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { SignUpPage } from "./pages/SignUpPage";
 import { ViewListingPage } from "./pages/ViewListingPage";
 import { CreateListingPage } from "./pages/CreateListingPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
 	{
@@ -31,8 +32,19 @@ const router = createBrowserRouter([
 	}
 ]);
 
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			retry: false,
+			refetchOnWindowFocus: false
+		}
+	}
+});
+
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<RouterProvider router={router} />
+		<QueryClientProvider client={queryClient}>
+			<RouterProvider router={router} />
+		</QueryClientProvider>
 	</StrictMode>
 );

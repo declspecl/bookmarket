@@ -14,81 +14,84 @@ export function LoginPage() {
     const navigate = useNavigate();
 
     return (
-        <div className="login-page">
+        <div>
             <NavBar />
 
-            <h1 className="login-page-title">Login</h1>
+            <div className="login-page">
 
-            {/*Sign-up Prompt*/}
-            <p className="signup-prompt">
-                Don't have an account? <Link to="/signup" className="underline">Click here</Link> to sign up!
-            </p>
+                <h1 className="login-page-title">Login</h1>
 
-            <div className="flex flex-col gap-6">
-                {/*Email Field*/}
-                <div>
-                    <h2 className="title">Email Address</h2>
-                    <Input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        value={inputtedEmail}
-                        onChange={(e) => setInputtedEmail(e.target.value)}
-                        required
-                    />
-                </div>
+                {/*Sign-up Prompt*/}
+                <p className="signup-prompt">
+                    Don't have an account? <Link to="/signup" className="underline">Click here</Link> to sign up!
+                </p>
 
-                {/*Password Field*/}
-                <div>
-                    <h2 className="title">Password</h2>
-                    <Input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        value={inputtedPassword}
-                        onChange={(e) => setInputtedPassword(e.target.value)}
-                        required
-                    />
-                </div>
+                <div className="flex flex-col gap-6">
+                    {/*Email Field*/}
+                    <div>
+                        <h2 className="title">Email Address</h2>
+                        <Input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            value={inputtedEmail}
+                            onChange={(e) => setInputtedEmail(e.target.value)}
+                            required
+                        />
+                    </div>
 
-                {/*Submit Button*/}
-                <div className="submit-box">
-                    <Button onClick={async () => {
-                        if (!inputtedEmail || !inputtedPassword) {
-                            alert("Please fill in all fields.");
-                            return;
-                        }
+                    {/*Password Field*/}
+                    <div>
+                        <h2 className="title">Password</h2>
+                        <Input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            value={inputtedPassword}
+                            onChange={(e) => setInputtedPassword(e.target.value)}
+                            required
+                        />
+                    </div>
 
-                        if (!inputtedEmail.match(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)) {
-                            alert("Please enter a valid email address.");
-                            return;
-                        }
-
-                        try {
-                            const response = await login({
-                                email: inputtedEmail,
-                                password: inputtedPassword
-                            });
-
-                            if (response.status.toString().startsWith("5")) {
-                                alert("Failed to log in. Please try again later.");
-                                return;
-                            }
-                            else if (!response.ok) {
-                                alert("Invalid credentials provided.");
+                    {/*Submit Button*/}
+                    <div className="submit-box">
+                        <Button onClick={async () => {
+                            if (!inputtedEmail || !inputtedPassword) {
+                                alert("Please fill in all fields.");
                                 return;
                             }
 
-                            navigate("/");
-                        }
-                        catch (e) {
-                            alert(`Error: ${e}`);
-                        }
-                    }}>
-                        Login
-                    </Button>
+                            if (!inputtedEmail.match(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)) {
+                                alert("Please enter a valid email address.");
+                                return;
+                            }
+
+                            try {
+                                const response = await login({
+                                    email: inputtedEmail,
+                                    password: inputtedPassword
+                                });
+
+                                if (response.status.toString().startsWith("5")) {
+                                    alert("Failed to log in. Please try again later.");
+                                    return;
+                                }
+                                else if (!response.ok) {
+                                    alert("Invalid credentials provided.");
+                                    return;
+                                }
+
+                                navigate("/");
+                            }
+                            catch (e) {
+                                alert(`Error: ${e}`);
+                            }
+                        }}>
+                            Login
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

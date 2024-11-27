@@ -28,7 +28,7 @@ public class CommentsTableAccessor extends TableAccessor {
 
     public List<CommentWithCreator> getAllCommentsForListing(int listingId) throws SQLException {
         List<CommentWithCreator> comments = new ArrayList<>();
-        String sql = "SELECT * FROM comments WHERE listing_id = ? ORDER BY created_at";
+        String sql = "SELECT * FROM comments WHERE parent_listing_id = ? ORDER BY created_at DESC";
 
         Connection connection = getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -41,7 +41,7 @@ public class CommentsTableAccessor extends TableAccessor {
             String content = results.getString("content");
             Instant createdAt = Instant.parse(results.getString("created_at"));
             int creatorId = results.getInt("creator_id");
-            int parentListingId = results.getInt("listing_id");
+            int parentListingId = results.getInt("parent_listing_id");
             Integer parentCommentId = results.getInt("parent_comment_id");
 
             // if you see this, it's already too late 🙏
@@ -63,7 +63,7 @@ public class CommentsTableAccessor extends TableAccessor {
     }
 
     public Comment createComment(CommentWithoutId commentWithoutId) throws SQLException {
-        String sql = "INSERT INTO comments (content, created_at, creator_id, listing_id, parent_comment_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO comments (content, created_at, creator_id, parent_listing_id, parent_comment_id) VALUES (?, ?, ?, ?, ?)";
 
         Connection connection = getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

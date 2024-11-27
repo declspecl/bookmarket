@@ -11,6 +11,7 @@ public class CommentWithoutId {
 
     public CommentWithoutId(String content, Instant createdAt, int creatorId, int parentListingId, Integer parentCommentId) {
         this.content = content;
+        this.createdAt = createdAt;
         this.creatorId = creatorId;
         this.parentListingId = parentListingId;
         this.parentCommentId = parentCommentId;
