@@ -2,23 +2,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between; 
-    /* left and right sections are spaced apart */
     background-color: #e5dfb7;
-    padding: 25px 40px; /* Space around content */
+    padding: 25px 40px;
 }
 
-.navbar img, .navbar h1 {
-    display: inline-block; /* logo and title inline */
+.navbar img{
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+
+.navbar h1 {
+    display: inline-block;
     color: black;
     font-size: 2rem;
-    font-family: 'Arial'; /*ask which font and maybe add backup*/
-    margin: 0; /* removes any default margin */
+    margin: 0;
 }
 
-.navbar-logo { /* space between logo and title*/
-    margin-right: 30px;
+.navbar-logo {
+    margin-right: 10px;
 }
-/* ^^^ idk if this is right since I combined title and image. will it work?*/
 
 .navbar div {
     margin-left: auto; 
@@ -29,8 +32,6 @@
 
 /*for links*/
 .navbar a { /* anchor elements - links*/
-    text-decoration: none;
-    font-family: 'Gill Sans'; /*chnage to right one - font change works here not under buttons*/
     font-size: 1rem;
     color: black;
     padding: 6px 20px;

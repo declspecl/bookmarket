@@ -11,7 +11,7 @@ export function NavBar() {
     return (
         <nav className = "navbar"> 
             <img
-                src="/path-to-your-image.png"
+                src="/OU_BookmarketImage.png"
                 className="navbar-logo"
             />
                 <h1 className="navbar-title">O.U. Bookmarket</h1>
