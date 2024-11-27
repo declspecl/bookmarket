@@ -112,7 +112,7 @@ export async function signup(request: SignupRequest): Promise<Response> {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({request}),
+        body: JSON.stringify(request),
     });
 
     return response;
@@ -130,7 +130,7 @@ export async function login(request: LoginRequest): Promise<Response> {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({request}),
+        body: JSON.stringify(request),
     });
 
     return response;
