@@ -1,12 +1,13 @@
 .navbar {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between; 
+    justify-content: space-between;
     background-color: #e5dfb7;
     padding: 25px 40px;
 }
 
-.navbar img{
+.navbar img {
     display: inline-block;
     width: 80px;
     height: 80px;
@@ -20,40 +21,19 @@
     margin: 0;
 }
 
-.navbar-logo {
-    margin-right: 10px;
-}
-
-.navbar div {
-    margin-left: auto; 
-    display: flex;
-    gap: 25px; 
-    flex-direction: row; /*horizontal*/
-}
-
 /*for links*/
 .navbar a { /* anchor elements - links*/
     font-size: 1rem;
     color: black;
     padding: 6px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .navbar a:hover {
-    color: white;
+    text-decoration: underline;
 }
 
-/*for links as buttons*/
-.navbar button {
-    background-color: transparent;
-    color:black; 
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.navbar button:hover {
-    color: white;
+@media screen and (min-width: 768px) {
+    .navbar {
+        flex-direction: row;
+    }
 }

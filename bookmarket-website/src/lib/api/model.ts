@@ -56,7 +56,7 @@ export interface ListingWithSeller {
 }
 
 export interface Comment {
-    id: string;
+    id: number;
     content: string;
     createdAt: string;
     creatorId: number;
@@ -65,7 +65,7 @@ export interface Comment {
 }
 
 export interface CommentWithCreator {
-    id: string;
+    id: number;
     content: string;
     createdAt: string;
     creator: User;

@@ -1,4 +1,4 @@
-import { Comment, CommentWithCreator, Listing, ListingWithSeller } from "./model";
+import { CommentWithCreator, Listing, ListingWithSeller } from "./model";
 
 // ================
 // = LISTING APIS =
@@ -120,10 +120,10 @@ export async function getAllComments(request: GetAllCommentsRequest): Promise<Ge
 // =============
 
 interface SignupRequest {
-    email : string;
-    firstName : string;
-    lastName : string;
-    password : string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
 }
 
 export async function signup(request: SignupRequest): Promise<Response> {
@@ -133,15 +133,15 @@ export async function signup(request: SignupRequest): Promise<Response> {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(request),
+        body: JSON.stringify(request)
     });
 
     return response;
 }
 
 interface LoginRequest {
-    email : string;
-    password : string;
+    email: string;
+    password: string;
 }
 
 export async function login(request: LoginRequest): Promise<Response> {
@@ -149,9 +149,9 @@ export async function login(request: LoginRequest): Promise<Response> {
         method: "POST",
         credentials: "include",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(request),
+        body: JSON.stringify(request)
     });
 
     return response;
@@ -160,7 +160,7 @@ export async function login(request: LoginRequest): Promise<Response> {
 export async function logout(): Promise<Response> {
     const response = await fetch("/api/auth/logout", {
         method: "POST",
-        credentials: "include",
+        credentials: "include"
     });
 
     return response;
