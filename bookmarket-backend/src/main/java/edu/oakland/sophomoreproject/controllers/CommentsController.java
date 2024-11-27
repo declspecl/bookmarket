@@ -2,6 +2,7 @@ package edu.oakland.sophomoreproject.controllers;
 
 import edu.oakland.sophomoreproject.controllers.model.CommentDisplayDetails;
 import edu.oakland.sophomoreproject.controllers.requests.CreateCommentRequest;
+import edu.oakland.sophomoreproject.controllers.responses.CreateCommentResponse;
 import edu.oakland.sophomoreproject.controllers.responses.GetAllCommentsForListingResponse;
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
@@ -60,7 +61,7 @@ public class CommentsController {
     }
 
     @PostMapping("/api/listings/{listingId}/comments")
-    public ResponseEntity<Void> createComment(
+    public ResponseEntity<CreateCommentResponse> createComment(
             HttpServletRequest request,
             @PathVariable("listingId") Integer listingId,
             @RequestBody CreateCommentRequest payload
@@ -83,14 +84,16 @@ public class CommentsController {
                 listingId,
                 null
         );
-        commentsTableAccessor.createComment(newComment);
+        CommentWithCreator comment = commentsTableAccessor.createComment(newComment);
 
         HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
-        return ResponseEntity.ok().headers(headers).build();
+        return ResponseEntity.ok().headers(headers).body(
+                new CreateCommentResponse(CommentDisplayDetails.fromCommentWithCreator(comment))
+        );
     }
 
     @PostMapping("/api/listings/{listingId}/comments/{parentCommentId}/reply")
-    public ResponseEntity<Void> createCommentReply(
+    public ResponseEntity<CreateCommentResponse> createCommentReply(
             HttpServletRequest request,
             @PathVariable("listingId") Integer listingId,
             @PathVariable("parentCommentId") Integer parentCommentId,
@@ -115,9 +118,11 @@ public class CommentsController {
                 parentCommentId
         );
 
-        commentsTableAccessor.createComment(replyComment);
+        CommentWithCreator comment = commentsTableAccessor.createComment(replyComment);
 
         HttpHeaders headers = controllerUtils.getHeadersWithSessionCookie(session);
-        return ResponseEntity.ok().headers(headers).build();
+        return ResponseEntity.ok().headers(headers).body(
+                new CreateCommentResponse(CommentDisplayDetails.fromCommentWithCreator(comment))
+        );
     }
 }

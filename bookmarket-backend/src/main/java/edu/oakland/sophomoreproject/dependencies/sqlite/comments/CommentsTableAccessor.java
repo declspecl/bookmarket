@@ -3,7 +3,6 @@ package edu.oakland.sophomoreproject.dependencies.sqlite.comments;
 import edu.oakland.sophomoreproject.dependencies.sqlite.TableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
 import edu.oakland.sophomoreproject.model.auth.User;
-import edu.oakland.sophomoreproject.model.comments.Comment;
 import edu.oakland.sophomoreproject.model.comments.CommentWithCreator;
 import edu.oakland.sophomoreproject.model.comments.CommentWithoutId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +61,7 @@ public class CommentsTableAccessor extends TableAccessor {
         return comments;
     }
 
-    public Comment createComment(CommentWithoutId commentWithoutId) throws SQLException {
+    public CommentWithCreator createComment(CommentWithoutId commentWithoutId) throws SQLException {
         String sql = "INSERT INTO comments (content, created_at, creator_id, parent_listing_id, parent_comment_id) VALUES (?, ?, ?, ?, ?)";
 
         Connection connection = getDatabaseConnection();
@@ -83,11 +82,14 @@ public class CommentsTableAccessor extends TableAccessor {
 
         int commentId = results.getInt(1);
 
-        return new Comment(
+        // if you see this, it's already too late 🙏
+        User creator = usersTableAccessor.getUserById(commentWithoutId.getCreatorId());
+
+        return new CommentWithCreator(
                 commentId,
                 commentWithoutId.getContent(),
                 commentWithoutId.getCreatedAt(),
-                commentWithoutId.getCreatorId(),
+                creator,
                 commentWithoutId.getParentListingId(),
                 commentWithoutId.getParentCommentId()
         );

@@ -62,7 +62,9 @@ public class ListingsController {
 
 		ListingWithSeller listing = listingsTableAccessor.getListingById(listingId);
 
-		GetListingByIdResponse response = new GetListingByIdResponse(ListingDisplayDetails.fromListingWithSeller(listing));
+		GetListingByIdResponse response = new GetListingByIdResponse(
+				listing != null ? ListingDisplayDetails.fromListingWithSeller(listing) : null
+		);
 		return ResponseEntity.ok().body(response);
 	}
 

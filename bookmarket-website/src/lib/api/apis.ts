@@ -76,7 +76,7 @@ interface CreateCommentRequest {
 }
 
 interface CreateCommentResponse {
-    comment: Comment;
+    comment: CommentWithCreator;
 }
 
 export async function createComment(request: CreateCommentRequest): Promise<CreateCommentResponse> {

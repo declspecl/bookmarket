@@ -1,7 +1,6 @@
 package edu.oakland.sophomoreproject.controllers.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import edu.oakland.sophomoreproject.model.comments.Comment;
 import edu.oakland.sophomoreproject.model.comments.CommentWithCreator;
 
 import java.time.Instant;

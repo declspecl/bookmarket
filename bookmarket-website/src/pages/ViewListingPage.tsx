@@ -60,7 +60,7 @@ export function ViewListingPage() {
     })
     const listing = getListingResponse?.listing;
 
-    const { isLoading: isCommentsLoading, error: commentsError, data: getCommentsResponse, refetch: refetchComments } = useQuery({
+    const { isLoading: isCommentsLoading, error: commentsError, data: getCommentsResponse } = useQuery({
         queryKey: ["GetAllCommentsForListing", { listingId: params["id"] }],
         queryFn: () => getAllComments({ listingId: parseInt(params["id"]!) })
     });
@@ -171,7 +171,10 @@ export function ViewListingPage() {
                                                     return;
                                                 }
 
-                                                setComments((await refetchComments()).data?.comments ?? []);
+                                                setComments((prev) => [response.comment, ...prev]);
+                                                setNewCommentText("");
+
+                                                console.log("here");
                                             }}
                                         >
                                             Add comment
