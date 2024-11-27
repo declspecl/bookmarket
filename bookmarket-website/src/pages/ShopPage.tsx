@@ -30,7 +30,7 @@ function ListingCard({ listing }: { listing: ListingWithSeller }) {
                 ) : (imageData && imageData.image && imageData.image.rawBytes) ? (
                     <img
                         src={`data:image/png;base64,${imageData!.image.rawBytes}`}
-                        alt="Listing image"
+                        alt="Listing image (failed to load)"
                         className="w-full h-full object-contain rounded-tr-lg rounded-tl-lg"
                     />
                 ) : (

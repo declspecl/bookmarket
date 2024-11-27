@@ -2,7 +2,7 @@ import { NavBar } from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { createComment, getAllComments, getListing } from "@/lib/api/apis";
+import { createComment, getAllComments, getImageForListingById, getListing } from "@/lib/api/apis";
 import { CommentWithCreator } from "@/lib/api/model";
 import { useQuery } from "@tanstack/react-query";
 import { LucideCalendar, LucideLoader2 } from "lucide-react";
@@ -77,6 +77,11 @@ export function ViewListingPage() {
         [comments]
     );
 
+    const { isLoading, error, data: imageData } = useQuery({
+        queryKey: ["GetImageForListingById", { listingId: params["id"] }],
+        queryFn: () => getImageForListingById({ listingId: parseInt(params["id"]!) })
+    });
+
     const [newCommentText, setNewCommentText] = useState("");
 
     return (
@@ -96,7 +101,21 @@ export function ViewListingPage() {
                         <p className="text-muted-foreground">By: {listing.authorName}</p>
                     </div>
 
-                    <div className="w-full h-52 bg-gray-400 rounded-lg" />
+                    <div className="w-full h-[32rem] bg-gray-300 rounded-lg">
+                        {isLoading ? (
+                            <div className="w-full h-full rounded-tl-lg rounded-tr-lg bg-gray-400 animate-pulse" />
+                        ) : error ? (
+                            <p>Failed to load image</p>
+                        ) : (imageData && imageData.image && imageData.image.rawBytes) ? (
+                            <img
+                                src={`data:image/png;base64,${imageData!.image.rawBytes}`}
+                                alt="Listing image (failed to load)"
+                                className="w-full h-full object-contain rounded-tr-lg rounded-tl-lg"
+                            />
+                        ) : (
+                            <div className="w-full h-full rounded-tl-lg rounded-tr-lg bg-gray-500" />
+                        )}
+                    </div>
 
                     <div>
                         <h3 className="text-3xl font-semibold">Sale Information</h3>
@@ -119,11 +138,15 @@ export function ViewListingPage() {
                             <p>We encountered a fatal error when trying to read the comments. Please try again later.</p>
                         ) : (
                             <div className="flex flex-col gap-4">
-                                <div className="flex flex-col gap-2">
-                                    {comments.map((comment) => (
-                                        <CommentCard key={`comment-${comment.id}`} comment={comment} commentById={commentById} setCommentText={setNewCommentText} />
-                                    ))}
-                                </div>
+                                {comments.length === 0 ? (
+                                    <p>There aren&apos;t any comments here yet. Want to be the first to make one?</p>
+                                ) : (
+                                    <div className="flex flex-col gap-2">
+                                        {comments.map((comment) => (
+                                            <CommentCard key={`comment-${comment.id}`} comment={comment} commentById={commentById} setCommentText={setNewCommentText} />
+                                        ))}
+                                    </div>
+                                )}
 
                                 <div className="flex flex-col gap-2 items-center">
                                     <Textarea
