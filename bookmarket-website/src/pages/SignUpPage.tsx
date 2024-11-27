@@ -106,7 +106,7 @@ export function SignUpPage() {
                             return;
                         }
 
-                        if (!inputtedEmail.match("^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$")) {
+                        if (!inputtedEmail.match(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)) {
                             alert("Please enter a valid email address.");
                             return;
                         }
