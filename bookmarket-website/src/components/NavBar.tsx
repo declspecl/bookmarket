@@ -9,26 +9,33 @@ export function NavBar() {
     const navigate = useNavigate();
 
     return (
-        <div>
-            <Link to="/">Shop</Link>
-            <Link to="/create-listing">Create Listing</Link>
+        <nav className = "navbar"> 
+            <img
+                src="/path-to-your-image.png"
+                className="navbar-logo"
+            />
+                <h1 className="navbar-title">O.U. Bookmarket</h1>
+            <div>
+                <Link to="/">Shop</Link>
+                <Link to="/create-listing">Create Listing</Link>
 
-            {!isLoggedIn ? (
-                <Link to="/login">Login</Link>
-             ) : (
-                <button
-                    onClick={async () => {
-                        await fetch("/api/auth/logout", {
-                            method: "POST"
-                        });
-                        document.cookie = "session=;Max-Age=0";
+                {!isLoggedIn ? (
+                    <Link to="/login">Login</Link>
+                ) : (
+                    <button
+                        onClick={async () => {
+                            await fetch("/api/auth/logout", {
+                                method: "POST"
+                            });
 
-                        navigate("/");
-                    }}
-                >
-                    Logout
-                </button>
-             )}
-        </div>
+                            navigate("/");
+                        }}
+                    >
+                        Logout
+                    </button>
+                )}
+            </div>
+        </nav>
+
     );
 }

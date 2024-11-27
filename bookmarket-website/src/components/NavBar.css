@@ -1,0 +1,57 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    /* left and right sections are spaced apart */
+    background-color: #e5dfb7;
+    padding: 25px 40px; /* Space around content */
+}
+
+.navbar img, .navbar h1 {
+    display: inline-block; /* logo and title inline */
+    color: black;
+    font-size: 2rem;
+    font-family: 'Arial'; /*ask which font and maybe add backup*/
+    margin: 0; /* removes any default margin */
+}
+
+.navbar-logo { /* space between logo and title*/
+    margin-right: 30px;
+}
+/* ^^^ idk if this is right since I combined title and image. will it work?*/
+
+.navbar div {
+    margin-left: auto; 
+    display: flex;
+    gap: 25px; 
+    flex-direction: row; /*horizontal*/
+}
+
+/*for links*/
+.navbar a { /* anchor elements - links*/
+    text-decoration: none;
+    font-family: 'Gill Sans'; /*chnage to right one - font change works here not under buttons*/
+    font-size: 1rem;
+    color: black;
+    padding: 6px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: white;
+}
+
+/*for links as buttons*/
+.navbar button {
+    background-color: transparent;
+    color:black; 
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.navbar button:hover {
+    color: white;
+}
