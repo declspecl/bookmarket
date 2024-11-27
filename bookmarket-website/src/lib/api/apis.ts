@@ -69,9 +69,8 @@ export async function getListing(request: GetListingRequest): Promise<GetListing
 // ================
 
 interface CreateCommentRequest {
-    // TODO
     content: string;
-    listingId:number;
+    listingId: number;
     // this says that the `parentCommentId` can optionally be included in the request (for if a comment is a reply)
     parentCommentId: number | undefined;
 }
@@ -81,21 +80,25 @@ interface CreateCommentResponse {
 }
 
 export async function createComment(request: CreateCommentRequest): Promise<CreateCommentResponse> {
-    // TODO
-    const response = await fetch('/apicomments'{
+    const url = request.parentCommentId
+        ? `/api/listings/${request.listingId}/comments/${request.parentCommentId}/reply`
+        : `/api/listings/${request.listingId}/comments`;
+
+    const response = await fetch(url, {
         method: "POST",
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(request),
+        body: JSON.stringify({
+            content: request.content
+        }),
     });
     const jsonResponse = await response.json();
     return jsonResponse;
 }
 
 interface GetAllCommentsRequest {
-    // TODO
     listingId: number;
 }
 
@@ -104,11 +107,10 @@ interface GetAllCommentsResponse {
 }
 
 export async function getAllComments(request: GetAllCommentsRequest): Promise<GetAllCommentsResponse> {
-    // TODO
-    const response = await fetch('/api/comments?listingId=${request.listingId}', {
+    const response = await fetch(`/api/listings/${request.listingId}/comments`, {
         method: "GET",
         credentials: "include",
-    }):
+    });
     const jsonResponse = await response.json();
     return jsonResponse;
 }
