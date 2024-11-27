@@ -82,109 +82,112 @@ export function ViewListingPage() {
     return (
         <div>
             <NavBar />
-                {isListingLoading ? (
-                    <LucideLoader2 className="animate-spin w-16 h-16" />
-                ) : listingError ? (
-                    <p>We encountered a fatal error when trying to read the listings. Please try again later.</p>
-                ) : listing && (
-                    <div className="px-4 md:px-0 md:w-3/4 lg:w-3/5 mx-auto flex flex-col gap-8">
-                        <div>
-                            <h2 className="text-4xl sm:text-5xl font-semibold">{listing.title}</h2>
-                            <p className="text-muted-foreground">By: {listing.authorName}</p>
-                        </div>
 
-                        <div className="w-full h-52 bg-gray-400 rounded-lg" />
+            <div className="my-8" />
 
-                        <div>
-                            <h3 className="text-3xl font-semibold">Sale Information</h3>
-                            <p><span className="font-medium">
-                                Seller:</span> {listing.seller.firstName} {listing.seller.lastName} &lt;<a href={`mailto:${listing.seller.email}`} className="underline">{listing.seller.email}</a>&gt;
-                            </p>
-                            <p><span className="font-medium">Description:</span> {listing.description}</p>
-                            <p><span className="font-medium">Condition:</span> {listing.condition}</p>
-                            <p><span className="font-medium">Price:</span> ${listing.price}</p>
-                            <p><span className="font-medium">Availability:</span> {listing.availability}</p>
-                            <p><span className="font-medium">Class Subject:</span> {listing.classSubject}</p>
-                        </div>
-
-                        <div>
-                            <h3 className="text-3xl font-semibold">Comments</h3>
-                                
-                            {isCommentsLoading ? (
-                                <LucideLoader2 className="animate-spin w-12 h-12" />
-                            ) : commentsError ? (
-                                <p>We encountered a fatal error when trying to read the comments. Please try again later.</p>
-                            ) : (
-                                <div className="flex flex-col gap-4">
-                                    <div className="flex flex-col gap-2">
-                                        {comments.map((comment) => (
-                                            <CommentCard key={`comment-${comment.id}`} comment={comment} commentById={commentById} setCommentText={setNewCommentText} />
-                                        ))}
-                                    </div>
-
-                                    <div className="flex flex-col gap-2 items-center">
-                                        <Textarea
-                                            placeholder="Add a comment..."
-                                            value={newCommentText}
-                                            onChange={(e) => setNewCommentText(e.target.value)}
-                                        />
-
-                                        <Button
-                                            onClick={async () => {
-                                                let formattedNewCommentText = newCommentText;
-                                                let parentCommentId: number | undefined = undefined;
-                                                if (newCommentText.startsWith("<@")) {
-                                                    const endBracketIndex = newCommentText.indexOf(">");
-                                                    if (endBracketIndex === -1) {
-                                                        alert("Invalid comment format! Please try again.");
-                                                        return;
-                                                    }
-
-                                                    const commentId = parseInt(newCommentText.substring(2, endBracketIndex));
-                                                    if (isNaN(commentId)) {
-                                                        alert("Invalid comment format! Please try again.");
-                                                        return;
-                                                    }
-
-                                                    if (!commentById[commentId]) {
-                                                        alert("Invalid comment format! Please try again.");
-                                                        return;
-                                                    }
-
-                                                    parentCommentId = commentId;
-                                                    formattedNewCommentText = newCommentText.substring(endBracketIndex + 1).trim();
-                                                }
-
-                                                if (!formattedNewCommentText) {
-                                                    alert("Please enter a comment!");
-                                                    return;
-                                                }
-
-                                                const response = await createComment({
-                                                    listingId: listing.id,
-                                                    content: formattedNewCommentText,
-                                                    parentCommentId
-                                                });
-
-                                                if (!response || !response.comment) {
-                                                    alert("Failed to add comment! Please try again later.");
-                                                    return;
-                                                }
-
-                                                setComments((prev) => [response.comment, ...prev]);
-                                                setNewCommentText("");
-
-                                                console.log("here");
-                                            }}
-                                        >
-                                            Add comment
-                                        </Button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+            {isListingLoading ? (
+                <LucideLoader2 className="animate-spin w-16 h-16" />
+            ) : listingError ? (
+                <p>We encountered a fatal error when trying to read the listings. Please try again later.</p>
+            ) : listing && (
+                <div className="px-4 md:px-0 md:w-3/4 lg:w-3/5 mx-auto flex flex-col gap-8">
+                    <div>
+                        <h2 className="text-4xl sm:text-5xl font-semibold">{listing.title}</h2>
+                        <p className="text-muted-foreground">By: {listing.authorName}</p>
                     </div>
-                )}
+
+                    <div className="w-full h-52 bg-gray-400 rounded-lg" />
+
+                    <div>
+                        <h3 className="text-3xl font-semibold">Sale Information</h3>
+                        <p><span className="font-medium">
+                            Seller:</span> {listing.seller.firstName} {listing.seller.lastName} &lt;<a href={`mailto:${listing.seller.email}`} className="underline">{listing.seller.email}</a>&gt;
+                        </p>
+                        <p><span className="font-medium">Description:</span> {listing.description}</p>
+                        <p><span className="font-medium">Condition:</span> {listing.condition}</p>
+                        <p><span className="font-medium">Price:</span> ${listing.price}</p>
+                        <p><span className="font-medium">Availability:</span> {listing.availability}</p>
+                        <p><span className="font-medium">Class Subject:</span> {listing.classSubject}</p>
+                    </div>
+
+                    <div>
+                        <h3 className="text-3xl font-semibold">Comments</h3>
+                            
+                        {isCommentsLoading ? (
+                            <LucideLoader2 className="animate-spin w-12 h-12" />
+                        ) : commentsError ? (
+                            <p>We encountered a fatal error when trying to read the comments. Please try again later.</p>
+                        ) : (
+                            <div className="flex flex-col gap-4">
+                                <div className="flex flex-col gap-2">
+                                    {comments.map((comment) => (
+                                        <CommentCard key={`comment-${comment.id}`} comment={comment} commentById={commentById} setCommentText={setNewCommentText} />
+                                    ))}
+                                </div>
+
+                                <div className="flex flex-col gap-2 items-center">
+                                    <Textarea
+                                        placeholder="Add a comment..."
+                                        value={newCommentText}
+                                        onChange={(e) => setNewCommentText(e.target.value)}
+                                    />
+
+                                    <Button
+                                        onClick={async () => {
+                                            let formattedNewCommentText = newCommentText;
+                                            let parentCommentId: number | undefined = undefined;
+                                            if (newCommentText.startsWith("<@")) {
+                                                const endBracketIndex = newCommentText.indexOf(">");
+                                                if (endBracketIndex === -1) {
+                                                    alert("Invalid comment format! Please try again.");
+                                                    return;
+                                                }
+
+                                                const commentId = parseInt(newCommentText.substring(2, endBracketIndex));
+                                                if (isNaN(commentId)) {
+                                                    alert("Invalid comment format! Please try again.");
+                                                    return;
+                                                }
+
+                                                if (!commentById[commentId]) {
+                                                    alert("Invalid comment format! Please try again.");
+                                                    return;
+                                                }
+
+                                                parentCommentId = commentId;
+                                                formattedNewCommentText = newCommentText.substring(endBracketIndex + 1).trim();
+                                            }
+
+                                            if (!formattedNewCommentText) {
+                                                alert("Please enter a comment!");
+                                                return;
+                                            }
+
+                                            const response = await createComment({
+                                                listingId: listing.id,
+                                                content: formattedNewCommentText,
+                                                parentCommentId
+                                            });
+
+                                            if (!response || !response.comment) {
+                                                alert("Failed to add comment! Please try again later.");
+                                                return;
+                                            }
+
+                                            setComments((prev) => [response.comment, ...prev]);
+                                            setNewCommentText("");
+
+                                            console.log("here");
+                                        }}
+                                    >
+                                        Add comment
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
