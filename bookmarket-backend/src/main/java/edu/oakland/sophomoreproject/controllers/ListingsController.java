@@ -8,8 +8,10 @@ import edu.oakland.sophomoreproject.controllers.responses.GetAllListingsResponse
 import edu.oakland.sophomoreproject.controllers.responses.GetListingByIdResponse;
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
+import edu.oakland.sophomoreproject.dependencies.sqlite.images.ImagesTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.listings.ListingsTableAccessor;
 import edu.oakland.sophomoreproject.dependencies.sqlite.users.UsersTableAccessor;
+import edu.oakland.sophomoreproject.model.images.ImageWithoutId;
 import edu.oakland.sophomoreproject.model.listings.ListingWithSeller;
 import edu.oakland.sophomoreproject.model.listings.ListingWithoutId;
 import edu.oakland.sophomoreproject.model.sessions.Session;
@@ -38,6 +40,7 @@ public class ListingsController {
 	private final ControllerUtils controllerUtils;
 	private final SessionAuthorizer sessionAuthorizer;
 	private final UsersTableAccessor usersTableAccessor;
+	private final ImagesTableAccessor imagesTableAccessor;
 	private final ListingsTableAccessor listingsTableAccessor;
 
 	@Autowired
@@ -45,11 +48,13 @@ public class ListingsController {
 			ControllerUtils controllerUtils,
 			SessionAuthorizer sessionAuthorizer,
 			UsersTableAccessor usersTableAccessor,
+			ImagesTableAccessor imagesTableAccessor,
 			ListingsTableAccessor listingsTableAccessor
 	) {
 		this.controllerUtils = controllerUtils;
 		this.sessionAuthorizer = sessionAuthorizer;
 		this.usersTableAccessor = usersTableAccessor;
+		this.imagesTableAccessor = imagesTableAccessor;
 		this.listingsTableAccessor = listingsTableAccessor;
 	}
 
@@ -94,11 +99,12 @@ public class ListingsController {
 				|| payload.getCondition() == null || payload.getCondition().trim().isEmpty()
 				|| payload.getAvailability() == null || payload.getAvailability().trim().isEmpty()
 				|| payload.getClassSubject() == null || payload.getClassSubject().trim().isEmpty()
+				|| payload.getImageRawBytes() == null || payload.getImageRawBytes().isEmpty()
 		) {
 			return ResponseEntity.status(400).build();
 		}
 
-		log.info("Got createListing request with payload {}", payload);
+		log.info("Got createListing request for title {}", payload.getTitle());
 
 		Session session;
 		try {
@@ -144,6 +150,13 @@ public class ListingsController {
 				availability,
 				classSubject,
 				sellerId
+		);
+
+		imagesTableAccessor.insertImage(
+				new ImageWithoutId(
+						listingId,
+						payload.getImageRawBytes()
+				)
 		);
 
 		CreateListingResponse response = new CreateListingResponse(listing);

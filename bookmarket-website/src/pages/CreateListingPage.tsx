@@ -14,7 +14,7 @@ import { LucideLoader2 } from "lucide-react";
 interface ImageUpload {
     image: File | undefined;
     previewUrl: string | undefined;
-    rawBytes?: Uint8Array | undefined;
+    rawBytes: Uint8Array | undefined;
 }
 
 interface ImageUploaderProps {
@@ -43,7 +43,7 @@ function ImageUploader({ imageUpload, setImageUpload }: ImageUploaderProps) {
         <div>
             <Input
                 type="file"
-                accept="image/*"
+                accept="image/png"
                 onChange={handleImageInput}
             />
 
@@ -193,7 +193,8 @@ export function CreateListingPage() {
                                         price: parseFloat(inputtedPrice),
                                         condition: selectedCondition,
                                         availability: Availability.AVAILABLE,
-                                        classSubject: selectedSubject
+                                        classSubject: selectedSubject,
+                                        imageRawBytes: btoa(String.fromCharCode(...inputtedImage.rawBytes))
                                     });
                                 }
                                 catch (e) {

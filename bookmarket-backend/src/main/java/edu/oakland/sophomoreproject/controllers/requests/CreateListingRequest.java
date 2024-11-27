@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class CreateListingRequest {
 	private String condition;
 	private String availability;
 	private String classSubject;
+	private String imageRawBytes;
 
 	public CreateListingRequest(
 			String title,
@@ -25,7 +28,8 @@ public class CreateListingRequest {
 			float price,
 			String condition,
 			String availability,
-			String classSubject
+			String classSubject,
+			String imageRawBytes
 	) {
 		this.title = title;
 		this.description = description;
@@ -34,6 +38,7 @@ public class CreateListingRequest {
 		this.condition = condition;
 		this.availability = availability;
 		this.classSubject = classSubject;
+		this.imageRawBytes = imageRawBytes;
 	}
 
 	public String getTitle() {
@@ -90,5 +95,13 @@ public class CreateListingRequest {
 
 	public void setClassSubject(String classSubject) {
 		this.classSubject = classSubject;
+	}
+
+	public String getImageRawBytes() {
+		return imageRawBytes;
+	}
+
+	public void setImageRawBytes(String imageRawBytes) {
+		this.imageRawBytes = imageRawBytes;
 	}
 }

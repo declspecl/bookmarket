@@ -9,15 +9,34 @@ import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getAllListings } from "@/lib/api/apis";
+import { getAllListings, getImageForListingById } from "@/lib/api/apis";
 import { LucideLoader2 } from "lucide-react";
 
 function ListingCard({ listing }: { listing: ListingWithSeller }) {
+    const { isLoading, error, data: imageData } = useQuery({
+        queryKey: ["GetImageForListingById", { listingId: listing.id }],
+        queryFn: () => getImageForListingById({ listingId: listing.id })
+    });
+
     const listingDate = new Date(listing.createdAt);
 
     return (
         <Card className="flex flex-col">
-            <div className="bg-gray-400 w-full min-h-40 rounded-tr-lg rounded-tl-lg" />
+            <div className="w-full h-40 bg-gray-300 rounded-tl-lg rounded-tr-lg">
+                {isLoading ? (
+                    <div className="w-full h-full rounded-tl-lg rounded-tr-lg bg-gray-400 animate-pulse" />
+                ) : error ? (
+                    <p>Failed to load image</p>
+                ) : (imageData && imageData.image && imageData.image.rawBytes) ? (
+                    <img
+                        src={`data:image/png;base64,${imageData!.image.rawBytes}`}
+                        alt="Listing image"
+                        className="w-full h-full object-contain rounded-tr-lg rounded-tl-lg"
+                    />
+                ) : (
+                    <div className="w-full h-full rounded-tl-lg rounded-tr-lg bg-gray-500" />
+                )}
+            </div>
 
             <CardContent className="grow flex flex-col gap-2 justify-between py-4 px-6">
                 <div className="flex flex-col gap-2">

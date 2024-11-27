@@ -72,3 +72,9 @@ export interface CommentWithCreator {
     parentListingId: number;
     parentCommentId: number | undefined;
 }
+
+export interface Image {
+    id: number;
+    listingId: number;
+    rawBytes?: string;
+}

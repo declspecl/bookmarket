@@ -1,4 +1,4 @@
-import { CommentWithCreator, Listing, ListingWithSeller } from "./model";
+import { CommentWithCreator, Listing, ListingWithSeller, Image } from "./model";
 
 // ================
 // = LISTING APIS =
@@ -12,6 +12,7 @@ interface CreateListingRequest {
     condition: string;
     availability: string;
     classSubject: string;
+    imageRawBytes: string;
 }
 
 interface CreateListingResponse {
@@ -164,4 +165,26 @@ export async function logout(): Promise<Response> {
     });
 
     return response;
+}
+
+// ==============
+// = IMAGE APIS =
+// ==============
+
+interface GetImageForListingByIdRequest {
+    listingId: number;
+}
+
+interface GetImageForListingByIdResponse {
+    image: Image
+}
+
+export async function getImageForListingById(request: GetImageForListingByIdRequest): Promise<GetImageForListingByIdResponse> {
+    const response = await fetch(`/api/images/${request.listingId}`, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    const jsonResponse = await response.json();
+    return jsonResponse;
 }
