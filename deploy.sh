@@ -4,11 +4,13 @@
 
 # move frontend files
 sudo mkdir -p /var/www/bookmarket
+sudo rm /var/www/bookmarket/*
 sudo mv bookmarket-website/dist/* /var/www/bookmarket
 sudo chmod -R 755 /var/www/bookmarket
 
 # move backend files
 sudo mkdir -p /opt/bookmarket/
+sudo rm /opt/bookmarket/bookmarket-backend.jar
 sudo mv bookmarket-backend/target/bookmarket-backend.jar /opt/bookmarket
 
 # set up nginx
