@@ -10,6 +10,7 @@ import { createListing } from "@/lib/api/apis";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { LucideLoader2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ImageUpload {
     image: File | undefined;
@@ -62,6 +63,8 @@ export function CreateListingPage() {
     const [selectedCondition, setSelectedCondition] = useState<Condition | undefined>(undefined);
     const [selectedSubject, setSelectedSubject] = useState<ClassSubject | undefined>(undefined);
     const [inputtedPrice, setInputtedPrice] = useState("");
+
+    const queryClient = useQueryClient();
 
     const navigate = useNavigate();
 
@@ -210,6 +213,10 @@ export function CreateListingPage() {
                                     return;
                                 }
 
+                                queryClient.invalidateQueries({
+                                    queryKey: ["GetAllListings"]
+                                });
+                                
                                 navigate(`/listing/${response.listing.id}`);
                             }}
                         >

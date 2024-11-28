@@ -25,6 +25,7 @@ export function NavBar() {
                     <Link to="/login">Login</Link>
                 ) : (
                     <button
+                        className="hover:underline"
                         onClick={async () => {
                             await logout();
                             document.cookie = "session=; Max-Age=0; Path=/";

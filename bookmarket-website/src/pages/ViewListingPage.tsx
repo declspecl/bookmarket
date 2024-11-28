@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { createComment, getAllComments, getImageForListingById, getListing } from "@/lib/api/apis";
 import { CommentWithCreator } from "@/lib/api/model";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { LucideCalendar, LucideLoader2 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -52,8 +52,6 @@ function CommentCard({ comment, commentById, setCommentText }: CommentCardProps)
 export function ViewListingPage() {
     const params = useParams();
 
-    console.log(params["id"]);
-
     const { isLoading: isListingLoading, error: listingError, data: getListingResponse } = useQuery({
         queryKey: ["GetListingById", { id: params["id"] }],
         queryFn: () => getListing({ listingId: parseInt(params["id"]!) })
@@ -84,8 +82,12 @@ export function ViewListingPage() {
 
     const [newCommentText, setNewCommentText] = useState("");
 
+    const queryClient = useQueryClient();
+
+    const isLoggedIn = document.cookie.includes("session");
+
     return (
-        <div>
+        <div className="mb-8">
             <NavBar />
 
             <div className="my-8" />
@@ -97,7 +99,7 @@ export function ViewListingPage() {
             ) : listing && (
                 <div className="px-4 md:px-0 md:w-3/4 lg:w-3/5 mx-auto flex flex-col gap-8">
                     <div>
-                        <h2 className="text-4xl sm:text-5xl font-semibold">{listing.title}</h2>
+                        <h2 className="text-4xl sm:text-5xl text-secondary font-semibold">{listing.title}</h2>
                         <p className="text-muted-foreground">By: {listing.authorName}</p>
                     </div>
 
@@ -118,19 +120,19 @@ export function ViewListingPage() {
                     </div>
 
                     <div>
-                        <h3 className="text-3xl font-semibold">Sale Information</h3>
-                        <p><span className="font-medium">
+                        <h3 className="text-3xl font-semibold text-secondary">Sale Information</h3>
+                        <p><span className="font-bold">
                             Seller:</span> {listing.seller.firstName} {listing.seller.lastName} &lt;<a href={`mailto:${listing.seller.email}`} className="underline">{listing.seller.email}</a>&gt;
                         </p>
-                        <p><span className="font-medium">Description:</span> {listing.description}</p>
-                        <p><span className="font-medium">Condition:</span> {listing.condition}</p>
-                        <p><span className="font-medium">Price:</span> ${listing.price}</p>
-                        <p><span className="font-medium">Availability:</span> {listing.availability}</p>
-                        <p><span className="font-medium">Class Subject:</span> {listing.classSubject}</p>
+                        <p><span className="font-bold">Description:</span> {listing.description}</p>
+                        <p><span className="font-bold">Condition:</span> {listing.condition}</p>
+                        <p><span className="font-bold">Price:</span> ${listing.price}</p>
+                        <p><span className="font-bold">Availability:</span> {listing.availability}</p>
+                        <p><span className="font-bold">Class Subject:</span> {listing.classSubject}</p>
                     </div>
 
                     <div>
-                        <h3 className="text-3xl font-semibold">Comments</h3>
+                        <h3 className="text-3xl font-semibold text-secondary">Comments</h3>
                             
                         {isCommentsLoading ? (
                             <LucideLoader2 className="animate-spin w-12 h-12" />
@@ -148,64 +150,68 @@ export function ViewListingPage() {
                                     </div>
                                 )}
 
-                                <div className="flex flex-col gap-2 items-center">
-                                    <Textarea
-                                        placeholder="Add a comment..."
-                                        value={newCommentText}
-                                        onChange={(e) => setNewCommentText(e.target.value)}
-                                    />
+                                {isLoggedIn && (
+                                    <div className="flex flex-col gap-2 items-center">
+                                        <Textarea
+                                            placeholder="Add a comment..."
+                                            value={newCommentText}
+                                            onChange={(e) => setNewCommentText(e.target.value)}
+                                        />
 
-                                    <Button
-                                        onClick={async () => {
-                                            let formattedNewCommentText = newCommentText;
-                                            let parentCommentId: number | undefined = undefined;
-                                            if (newCommentText.startsWith("<@")) {
-                                                const endBracketIndex = newCommentText.indexOf(">");
-                                                if (endBracketIndex === -1) {
-                                                    alert("Invalid comment format! Please try again.");
+                                        <Button
+                                            onClick={async () => {
+                                                let formattedNewCommentText = newCommentText;
+                                                let parentCommentId: number | undefined = undefined;
+                                                if (newCommentText.startsWith("<@")) {
+                                                    const endBracketIndex = newCommentText.indexOf(">");
+                                                    if (endBracketIndex === -1) {
+                                                        alert("Invalid comment format! Please try again.");
+                                                        return;
+                                                    }
+
+                                                    const commentId = parseInt(newCommentText.substring(2, endBracketIndex));
+                                                    if (isNaN(commentId)) {
+                                                        alert("Invalid comment format! Please try again.");
+                                                        return;
+                                                    }
+
+                                                    if (!commentById[commentId]) {
+                                                        alert("Invalid comment format! Please try again.");
+                                                        return;
+                                                    }
+
+                                                    parentCommentId = commentId;
+                                                    formattedNewCommentText = newCommentText.substring(endBracketIndex + 1).trim();
+                                                }
+
+                                                if (!formattedNewCommentText) {
+                                                    alert("Please enter a comment!");
                                                     return;
                                                 }
 
-                                                const commentId = parseInt(newCommentText.substring(2, endBracketIndex));
-                                                if (isNaN(commentId)) {
-                                                    alert("Invalid comment format! Please try again.");
+                                                const response = await createComment({
+                                                    listingId: listing.id,
+                                                    content: formattedNewCommentText,
+                                                    parentCommentId
+                                                });
+
+                                                if (!response || !response.comment) {
+                                                    alert("Failed to add comment! Please try again later.");
                                                     return;
                                                 }
 
-                                                if (!commentById[commentId]) {
-                                                    alert("Invalid comment format! Please try again.");
-                                                    return;
-                                                }
+                                                setComments((prev) => [response.comment, ...prev]);
+                                                setNewCommentText("");
 
-                                                parentCommentId = commentId;
-                                                formattedNewCommentText = newCommentText.substring(endBracketIndex + 1).trim();
-                                            }
-
-                                            if (!formattedNewCommentText) {
-                                                alert("Please enter a comment!");
-                                                return;
-                                            }
-
-                                            const response = await createComment({
-                                                listingId: listing.id,
-                                                content: formattedNewCommentText,
-                                                parentCommentId
-                                            });
-
-                                            if (!response || !response.comment) {
-                                                alert("Failed to add comment! Please try again later.");
-                                                return;
-                                            }
-
-                                            setComments((prev) => [response.comment, ...prev]);
-                                            setNewCommentText("");
-
-                                            console.log("here");
-                                        }}
-                                    >
-                                        Add comment
-                                    </Button>
-                                </div>
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ["GetAllCommentsForListing", { listingId: params["id"] }]
+                                                });
+                                            }}
+                                        >
+                                            Add comment
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
