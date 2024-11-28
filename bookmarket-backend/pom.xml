@@ -14,7 +14,9 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.release>21</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    </properties>
+
+    <packaging>jar</packaging>
 
 	<dependencies>
 		<!-- API -->
@@ -60,7 +62,9 @@
 		</dependency>
 	</dependencies>
 
-	<build>
+    <build>
+        <finalName>bookmarket-backend</finalName>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

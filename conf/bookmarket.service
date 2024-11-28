@@ -1,0 +1,18 @@
+[Unit]
+Description=Bookmarket API Service
+After=network.target
+
+[Service]
+Type=simple
+User=bookmarket
+Group=bookmarket
+WorkingDirectory=/opt/bookmarket
+ExecStart=/usr/bin/java -jar -Dspring.profiles.active=prod /opt/bookmarket/bookmarket-backend.jar
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=bookmarket-backend
+
+[Install]
+WantedBy=multi-user.target
