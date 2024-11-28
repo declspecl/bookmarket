@@ -110,6 +110,7 @@ export function ViewListingPage() {
                             <p>Failed to load image</p>
                         ) : (imageData && imageData.image && imageData.image.rawBytes) ? (
                             <img
+                                loading="lazy"
                                 src={`data:image/png;base64,${imageData!.image.rawBytes}`}
                                 alt="Listing image (failed to load)"
                                 className="w-full h-full object-contain rounded-tr-lg rounded-tl-lg"

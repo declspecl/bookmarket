@@ -13,7 +13,7 @@ public class ControllerUtils {
 	public HttpHeaders getHeadersWithSessionCookie(Session session) {
 		session.refresh();
 
-		String sessionHeader = "session=" + session.getSessionId() + "; Expires=" + Date.from(session.getExpiresAt()) + "; Path=/";
+		String sessionHeader = "session=" + session.getSessionId() + "; Max-Age=" + String.valueOf(60 * 60) + "; Path=/";
 
 		log.info("Created session header {} for session {}", sessionHeader, session);
 

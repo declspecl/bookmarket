@@ -49,7 +49,7 @@ function ImageUploader({ imageUpload, setImageUpload }: ImageUploaderProps) {
             />
 
             {imageUpload.previewUrl && (
-                <img src={imageUpload.previewUrl} className="max-w-96 aspect-auto" alt="Image previewUrl" />
+                <img loading="eager" src={imageUpload.previewUrl} className="max-w-96 aspect-auto" alt="Image previewUrl" />
             )}
         </div>
     )
@@ -185,6 +185,15 @@ export function CreateListingPage() {
                                     return;
                                 }
 
+                                if (inputtedImage.rawBytes.length > 1024 * 1024 * 2) {
+                                    alert("Please upload an image smaller than 2MB!");
+                                    return;
+                                }
+
+                                const convertToBase64 = (bytes: Uint8Array): string => {
+                                    return btoa(bytes.reduce((data, byte) => data + String.fromCharCode(byte), ''));
+                                }
+
                                 setIsCreatingListing(true);
 
                                 let response;
@@ -197,10 +206,12 @@ export function CreateListingPage() {
                                         condition: selectedCondition,
                                         availability: Availability.AVAILABLE,
                                         classSubject: selectedSubject,
-                                        imageRawBytes: btoa(String.fromCharCode(...inputtedImage.rawBytes))
+                                        imageRawBytes: convertToBase64(inputtedImage.rawBytes)
                                     });
                                 }
                                 catch (e) {
+                                    console.error(e);
+
                                     alert("Failed to create listing! Please try again later.");
                                     setIsCreatingListing(false);
                                     return;

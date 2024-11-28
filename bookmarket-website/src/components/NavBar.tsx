@@ -12,7 +12,7 @@ export function NavBar() {
     return (
         <nav className="navbar"> 
             <div className="flex flex-col items-center gap-2 sm:flex-row">
-                <img src="/OU_BookmarketImage.png" alt="logo" className="navbar-logo"/>
+                <img loading="eager" src="/OU_BookmarketImage.png" alt="logo" className="navbar-logo"/>
                 <h1 className="navbar-title">O.U. Bookmarket</h1>
             </div>
 

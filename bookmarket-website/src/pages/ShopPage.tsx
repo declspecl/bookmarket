@@ -20,22 +20,29 @@ function ListingCard({ listing }: { listing: ListingWithSeller }) {
 
     const listingDate = new Date(listing.createdAt);
 
+    const preview = useMemo(() => (
+        <>
+            {isLoading ? (
+                <div className="w-full h-full rounded-tl-lg rounded-tr-lg bg-gray-400 animate-pulse" />
+            ) : error ? (
+                <p>Failed to load image</p>
+            ) : (imageData && imageData.image && imageData.image.rawBytes) ? (
+                <img
+                    loading="lazy"
+                    src={`data:image/png;base64,${imageData!.image.rawBytes}`}
+                    alt="Listing image (failed to load)"
+                    className="w-full h-full object-contain rounded-tr-lg rounded-tl-lg"
+                />
+            ) : (
+                <div className="w-full h-full rounded-tl-lg rounded-tr-lg bg-gray-500" />
+            )}
+        </>
+    ), [isLoading, error, imageData]);
+
     return (
         <Card className="flex flex-col">
             <div className="w-full h-40 bg-gray-300 rounded-tl-lg rounded-tr-lg">
-                {isLoading ? (
-                    <div className="w-full h-full rounded-tl-lg rounded-tr-lg bg-gray-400 animate-pulse" />
-                ) : error ? (
-                    <p>Failed to load image</p>
-                ) : (imageData && imageData.image && imageData.image.rawBytes) ? (
-                    <img
-                        src={`data:image/png;base64,${imageData!.image.rawBytes}`}
-                        alt="Listing image (failed to load)"
-                        className="w-full h-full object-contain rounded-tr-lg rounded-tl-lg"
-                    />
-                ) : (
-                    <div className="w-full h-full rounded-tl-lg rounded-tr-lg bg-gray-500" />
-                )}
+                {preview}
             </div>
 
             <CardContent className="grow flex flex-col gap-2 justify-between py-4 px-6">
