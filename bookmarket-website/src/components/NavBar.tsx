@@ -27,6 +27,7 @@ export function NavBar() {
                     <button
                         onClick={async () => {
                             await logout();
+                            document.cookie = "session=; Max-Age=0; Path=/";
 
                             navigate("/");
                         }}
