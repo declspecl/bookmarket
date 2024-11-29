@@ -2,6 +2,7 @@ package edu.oakland.sophomoreproject.controllers;
 
 import edu.oakland.sophomoreproject.authorization.SessionAuthorizer;
 import edu.oakland.sophomoreproject.components.ControllerUtils;
+import edu.oakland.sophomoreproject.components.PasswordHasher;
 import edu.oakland.sophomoreproject.controllers.requests.LoginRequest;
 import edu.oakland.sophomoreproject.controllers.requests.SignUpRequest;
 import edu.oakland.sophomoreproject.model.auth.User;
@@ -25,17 +26,20 @@ import java.time.Instant;
 @Log4j2
 @RestController
 public class AuthController {
+	private final PasswordHasher passwordHasher;
 	private final ControllerUtils controllerUtils;
 	private final SessionAuthorizer sessionAuthorizer;
 	private final UsersTableAccessor usersTableAccessor;
 	private final SessionsTableAccessor sessionsTableAccessor;
 
 	public AuthController(
+			PasswordHasher passwordHasher,
 			ControllerUtils controllerUtils,
 			SessionAuthorizer sessionAuthorizer,
 			UsersTableAccessor usersTableAccessor,
 			SessionsTableAccessor sessionsTableAccessor
 	) {
+		this.passwordHasher = passwordHasher;
 		this.controllerUtils = controllerUtils;
 		this.sessionAuthorizer = sessionAuthorizer;
 		this.usersTableAccessor = usersTableAccessor;
@@ -55,7 +59,8 @@ public class AuthController {
 
 		log.info("Got login request with payload {}", payload);
 
-		User user = usersTableAccessor.getUserByEmailAndPassword(payload.getEmail(), payload.getPassword());
+		String hashedPassword = passwordHasher.hashPassword(payload.getPassword());
+		User user = usersTableAccessor.getUserByEmailAndPassword(payload.getEmail(), hashedPassword);
 		if (user == null) {
 			return ResponseEntity.status(401).build();
 		}
@@ -83,11 +88,12 @@ public class AuthController {
 
 		log.info("Got signup request with payload {}", payload);
 
+		String hashedPassword = passwordHasher.hashPassword(payload.getPassword());
 		UserWithoutId userWithoutId = new UserWithoutId(
 				payload.getFirstName(),
 				payload.getLastName(),
 				payload.getEmail(),
-				payload.getPassword(),
+				hashedPassword,
 				Instant.now()
 		);
 
