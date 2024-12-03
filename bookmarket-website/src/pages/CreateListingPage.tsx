@@ -3,7 +3,7 @@ import "./CreateListingPage.css";
 import { NavBar } from "@/components/NavBar";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Availability, ClassSubject, Condition } from "@/lib/api/model";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createListing } from "@/lib/api/apis";
@@ -69,6 +69,14 @@ export function CreateListingPage() {
     const navigate = useNavigate();
 
     const [isCreatingListing, setIsCreatingListing] = useState(false);
+
+    useEffect(() => {
+        const isLoggedIn = document.cookie.includes("session");
+
+        if (!isLoggedIn) {
+            navigate("/login")
+        }
+    }, [])
 
     return (
         <div>
@@ -212,7 +220,7 @@ export function CreateListingPage() {
                                 catch (e) {
                                     console.error(e);
 
-                                    alert("Failed to create listing! Please try again later.");
+                                    alert("Failed to create listing! Please try again later. Error: " + e);
                                     setIsCreatingListing(false);
                                     return;
                                 }

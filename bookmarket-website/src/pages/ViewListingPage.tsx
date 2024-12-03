@@ -16,6 +16,8 @@ interface CommentCardProps {
 }
 
 function CommentCard({ comment, commentById, setCommentText }: CommentCardProps) {
+    const isLoggedIn = document.cookie.includes("session");
+
     return (
         <Card key={`comment-${comment.id}`} className="w-full">
             <CardContent className="py-4 px-6 flex flex-col gap-2">
@@ -31,19 +33,21 @@ function CommentCard({ comment, commentById, setCommentText }: CommentCardProps)
                 )}
                 <p className="text-wrap">{comment.content}</p>
 
-                <Button
-                    className="w-fit"
-                    onClick={() => setCommentText((prev) => {
-                        const replyFormat = /<@\d+>/;
-                        if (replyFormat.test(prev)) {
-                            return prev.replace(replyFormat, `<@${comment.id}>`);
-                        }
+                {isLoggedIn && (
+                    <Button
+                        className="w-fit"
+                        onClick={() => setCommentText((prev) => {
+                            const replyFormat = /<@\d+>/;
+                            if (replyFormat.test(prev)) {
+                                return prev.replace(replyFormat, `<@${comment.id}>`);
+                            }
 
-                        return `<@${comment.id}> ` + prev;
-                    })}
-                >
-                    Reply
-                </Button>
+                            return `<@${comment.id}> ` + prev;
+                        })}
+                    >
+                        Reply
+                    </Button>
+                )}
             </CardContent>
         </Card>
     );
