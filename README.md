@@ -1,6 +1,12 @@
 This is a project containing two subprojects: bookmarket-website and bookmarket-backend.
 See their README.md files for more details
 
+# `whoarewe`
+- Izabela Camaj: [bella-c-5](https://github.com/bella-c-5)
+- Gavin D'Hondt: [declspecl](https://github.com/declspecl)
+- Joe O'Brien: [jlobrien22](https://github.com/jlobrien22)
+- BoiGia Phui: [giaant22](https://github.com/giaant22)
+
 # Where to find
 Check it out at [https://www.ou-bookmarket.com](https://www.ou-bookmarket.com)!
 
