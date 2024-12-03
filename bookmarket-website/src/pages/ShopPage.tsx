@@ -140,16 +140,17 @@ export function ShopPage() {
         }
     }, [listings, filterType, filterDirection]);
 
-    const fuse = new Fuse(filteredListings, {
-        keys: ["title", "description", "authorName", "condition", "classSubject"],
-        threshold: 0.65
-    });
 
     // https://www.fusejs.io/demo.html
     const searchOrderedListings = useMemo(() => {
         if (!searchInput) {
             return filteredListings;
         }
+
+        const fuse = new Fuse(filteredListings, {
+            keys: ["title", "description", "authorName", "condition", "classSubject"],
+            threshold: 0.45
+        });
 
         return fuse.search(searchInput).map(result => result.item);
     }, [filteredListings, searchInput]);
