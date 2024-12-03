@@ -33,6 +33,11 @@ function ImageUploader({ imageUpload, setImageUpload }: ImageUploaderProps) {
         const arrayBuffer = await file.arrayBuffer();
         const rawBytes = new Uint8Array(arrayBuffer);
 
+        if (rawBytes.length > 1024 * 1024) {
+            alert("Please upload an image smaller than 1MB!");
+            return;
+        }
+
         setImageUpload({
             image: file,
             previewUrl: previewUrl,
@@ -193,8 +198,8 @@ export function CreateListingPage() {
                                     return;
                                 }
 
-                                if (inputtedImage.rawBytes.length > 1024 * 1024 * 2) {
-                                    alert("Please upload an image smaller than 2MB!");
+                                if (inputtedImage.rawBytes.length > 1024 * 1024) {
+                                    alert("Please upload an image smaller than 1MB!");
                                     return;
                                 }
 
