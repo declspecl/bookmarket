@@ -34,6 +34,7 @@ function ImageUploader({ imageUpload, setImageUpload }: ImageUploaderProps) {
         const rawBytes = new Uint8Array(arrayBuffer);
 
         if (rawBytes.length > 1024 * 1024) {
+            e.target.value = "";
             alert("Please upload an image smaller than 1MB!");
             return;
         }
